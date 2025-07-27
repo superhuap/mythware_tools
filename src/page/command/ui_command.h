@@ -62,7 +62,7 @@ public:
         verticalLayout->addWidget(pushButton_selectAll);
 
         treeView = new ElaTreeView(command);
-        treeView->setObjectName(QString::fromUtf8("treeView"));
+        // treeView->setObjectName(QString::fromUtf8("treeView"));
 
         verticalLayout->addWidget(treeView);
 

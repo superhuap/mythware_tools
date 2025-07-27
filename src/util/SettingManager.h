@@ -17,7 +17,7 @@ public:
 
     // 提供 QSettings 的访问方法
     void setValue(const QString &key, const QVariant &value);
-    QVariant value(const QString &key, const QVariant &defaultValue = QVariant()) const;
+    QVariant getValue(const QString &key, const QVariant &defaultValue = QVariant()) const;
     void remove(const QString &key);
     void sync();
 

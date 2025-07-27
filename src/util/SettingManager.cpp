@@ -26,7 +26,7 @@ void SettingsManager::setValue(const QString &key, const QVariant &value)
     m_settings.setValue(key, value);
 }
 
-QVariant SettingsManager::value(const QString &key, const QVariant &defaultValue) const
+QVariant SettingsManager::getValue(const QString &key, const QVariant &defaultValue) const
 {
     return m_settings.value(key, defaultValue);
 }
