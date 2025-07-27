@@ -17,9 +17,12 @@ find_package(Qt5 COMPONENTS
         Core
         Gui
         Widgets
+        Network
         REQUIRED)
 
-add_executable(mythware_tools main.cpp ${SRC})
+add_executable(mythware_tools main.cpp ${SRC}
+        src/util/SettingManager.cpp
+        src/util/SettingManager.h)
 
 target_include_directories(mythware_tools PRIVATE lib/include)
 
@@ -29,6 +32,7 @@ target_link_libraries(mythware_tools
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        Qt5::Network
         ElaWidgetTools
 )
 
