@@ -10,7 +10,6 @@
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QButtonGroup>
-#include <qdebug.h>
 #include <ElaTheme.h>
 #include <ElaScrollPageArea.h>
 #include <ElaText.h>
@@ -40,16 +39,13 @@ setting::~setting() {
 void setting::initSettings() {
     QSettings * settings = SettingsManager::instance() -> settings();
     if (settings->value("run_mode").isNull()) {
-        qDebug() << "settings::initSettings: run_mode not set";
         settings->setValue("run_mode", "cmd");
     }
     if (settings->value("theme").isNull()) {
-        qDebug() << "settings::initSettings: theme not set";
         settings->setValue("theme", 0);
     }
     if (settings->value("mica_theme").isNull()) {
-        qDebug() << "settings::initSettings: mica_theme not set";
-        settings->setValue("mica_theme", "normal");
+        settings->setValue("mica_theme", "Normal");
     }
 }
 
@@ -63,20 +59,20 @@ void setting::createWidgets() {
     // 模式选择
     modeSwitchArea = new ElaScrollPageArea(this);
     modeSwitchLayout = new QHBoxLayout(modeSwitchArea);
-    modeSwitchText = new ElaText("命令运行方式", modeSwitchArea);
+    modeSwitchText = new ElaText(QStringLiteral("命令运行方式"), modeSwitchArea);
     modeComboBox = new ElaComboBox(modeSwitchArea);
 
     // IP 加载
     ipLoaderSwitchArea = new ElaScrollPageArea(this);
     ipLoaderSwitchLayout = new QHBoxLayout(ipLoaderSwitchArea);
-    ipLoaderSwitchText = new ElaText("ip列表路径", ipLoaderSwitchArea);
+    ipLoaderSwitchText = new ElaText(QStringLiteral("ip列表路径"), ipLoaderSwitchArea);
     ipLoaderSwitchPath = new ElaText("", ipLoaderSwitchArea);
     ipLoaderPushButton = new ElaPushButton(ipLoaderSwitchArea);
 
     // Mica 开关
     micaSwitchArea = new ElaScrollPageArea(this);
     micaSwitchLayout = new QHBoxLayout(micaSwitchArea);
-    micaSwitchText = new ElaText("云母效果", micaSwitchArea);
+    micaSwitchText = new ElaText(QStringLiteral("云母效果"), micaSwitchArea);
     micaButtonGroup = new QButtonGroup(this);
     normalButton = new ElaRadioButton("Normal", this);
     elamicaButton = new ElaRadioButton("ElaMica", this);
@@ -90,7 +86,7 @@ void setting::createWidgets() {
     // 主题切换
     themeSwitchArea = new ElaScrollPageArea(this);
     themeSwitchLayout = new QHBoxLayout(themeSwitchArea);
-    themeSwitchText = new ElaText("主题切换", themeSwitchArea);
+    themeSwitchText = new ElaText(QStringLiteral("主题切换"), themeSwitchArea);
     themeComboBox = new ElaComboBox(themeSwitchArea);
 }
 
@@ -106,7 +102,7 @@ void setting::configWidgets() {
     ipLoaderSwitchText->setTextPixelSize(15);
     ipLoaderSwitchPath->setTextPixelSize(10);
     ipLoaderSwitchPath->setWordWrap(false);
-    ipLoaderPushButton->setText("选择文件");
+    ipLoaderPushButton->setText(QStringLiteral("选择文件"));
 
     // mica
     micaSwitchText->setWordWrap(false);
@@ -123,8 +119,8 @@ void setting::configWidgets() {
     // theme
     themeSwitchText->setWordWrap(false);
     themeSwitchText->setTextPixelSize(15);
-    themeComboBox->addItem("日间模式");
-    themeComboBox->addItem("夜间模式");
+    themeComboBox->addItem(QStringLiteral("日间模式"));
+    themeComboBox->addItem(QStringLiteral("夜间模式"));
 }
 
 void setting::loadSettings() {
@@ -133,7 +129,7 @@ void setting::loadSettings() {
     modeComboBox->setCurrentText(settings->value("run_mode").toString());
 
     eTheme->setThemeMode(settings->value("theme").toInt() == 0 ? ElaThemeType::Light : ElaThemeType::Dark);
-    themeComboBox->setCurrentText(settings->value("theme") == 0 ? "日间模式" : "夜间模式");
+    themeComboBox->setCurrentText(settings->value("theme") == 0 ? QStringLiteral("日间模式") : QStringLiteral("夜间模式"));
 
     QString mica_code = settings->value("mica_theme").toString();
     if (mica_code == "Normal") {

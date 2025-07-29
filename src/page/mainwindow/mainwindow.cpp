@@ -25,8 +25,8 @@ void mainwindow::init() {
     this->setUserInfoCardVisible(false);
     this->setWindowTitle("mythware_tools");
 
-    this->addPageNode("发送消息", new message(this), ElaIconType::Message);
-    this->addPageNode("发送命令", new command(this), ElaIconType::Computer);
-    this->addFooterNode("设置", new setting(this), Setting_key, 0, ElaIconType::GearComplex);
+    this->addPageNode(QStringLiteral("发送消息"), new message(this), ElaIconType::Message);
+    this->addPageNode(QStringLiteral("发送命令"), new command(this), ElaIconType::Computer);
+    this->addFooterNode(QStringLiteral("设置"), new setting(this), Setting_key, 0, ElaIconType::GearComplex);
 }
 

@@ -6,12 +6,18 @@
 
 #include "command.h"
 #include "ui_command.h"
+#include "../../model/TreeModel.h"
 
 command::command(QWidget *parent) :
     QWidget(parent), ui(new Ui::command) {
     ui->setupUi(this);
+    loadData();
 }
 
 command::~command() {
     delete ui;
+}
+
+void command::loadData() {
+    ui->treeView->setModel(TreeModel::instance());
 }

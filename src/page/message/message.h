@@ -19,8 +19,15 @@ public:
     explicit message(QWidget *parent = nullptr);
     ~message() override;
 
+private slots:
+    void onSelectAllButtonClicked();
+    void onLoadDataButtonClicked();
+
 private:
     Ui::message *ui;
+    void configWidgets();
+    void loadData();
+    void setupConnections();
 };
 
 

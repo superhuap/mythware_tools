@@ -20,9 +20,7 @@ find_package(Qt5 COMPONENTS
         Network
         REQUIRED)
 
-add_executable(mythware_tools main.cpp ${SRC}
-        src/util/SettingManager.cpp
-        src/util/SettingManager.h)
+add_executable(mythware_tools src/main.cpp ${SRC})
 
 target_include_directories(mythware_tools PRIVATE lib/include)
 
