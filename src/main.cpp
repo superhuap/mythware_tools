@@ -1,4 +1,4 @@
-#include <QApplication>
+﻿#include <QApplication>
 #include <ElaApplication.h>
 #include "page/mainwindow/mainwindow.h"
 

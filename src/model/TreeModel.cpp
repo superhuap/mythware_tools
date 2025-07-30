@@ -1,4 +1,4 @@
-// TreeModel.cpp
+﻿// TreeModel.cpp
 #include "TreeModel.h"
 #include "../item/TreeItem.h"
 #include "../util/SettingManager.h"

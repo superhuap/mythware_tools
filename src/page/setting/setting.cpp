@@ -1,4 +1,4 @@
-//
+﻿//
 // Created by superhuap on 2025/7/27.
 //
 
@@ -139,7 +139,7 @@ void setting::loadSettings() {
         micaButtonGroup->button(1)->setChecked(true);
         eApp->setWindowDisplayMode(ElaApplicationType::ElaMica);
     }
-    #if Q_OS_WIN
+    #ifdef Q_OS_WIN
     else if (mica_code == "Mica") {
         micaButtonGroup->button(2)->setChecked(true);
         eApp->setWindowDisplayMode(ElaApplicationType::Mica);
@@ -176,7 +176,7 @@ void setting::setupLayout() {
     micaSwitchLayout->addStretch();
     micaSwitchLayout->addWidget(normalButton);
     micaSwitchLayout->addWidget(elamicaButton);
-    #if Q_OS_WIN
+    #ifdef Q_OS_WIN
     micaSwitchLayout->addWidget(micaButton);
     micaSwitchLayout->addWidget(micaAltButton);
     micaSwitchLayout->addWidget(acrylicButton);
@@ -219,7 +219,7 @@ void setting::onMicaButtonClicked(QAbstractButton *button) {
     } else if (button->text() == "ElaMica") {
         eApp->setWindowDisplayMode(ElaApplicationType::ElaMica);
     }
-    #if Q_OS_WIN
+    #ifdef Q_OS_WIN
     else if (button->text() == "Mica") {
         eApp->setWindowDisplayMode(ElaApplicationType::Mica);
     } else if (button->text() == "MicaAlt") {
