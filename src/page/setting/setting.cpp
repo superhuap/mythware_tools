@@ -69,6 +69,20 @@ void setting::createWidgets() {
     ipLoaderSwitchPath = new ElaText("", ipLoaderSwitchArea);
     ipLoaderPushButton = new ElaPushButton(ipLoaderSwitchArea);
 
+    // 快捷消息加载
+    msgLoaderSwitchArea = new ElaScrollPageArea(this);
+    msgLoaderSwitchLayout = new QHBoxLayout(msgLoaderSwitchArea);
+    msgLoaderSwitchText = new ElaText(QStringLiteral("快捷消息路径"), msgLoaderSwitchArea);
+    msgLoaderSwitchPath = new ElaText("", msgLoaderSwitchArea);
+    msgLoaderPushButton = new ElaPushButton(msgLoaderSwitchArea);
+
+    // 快捷命令加载
+    cmdLoaderSwitchArea = new ElaScrollPageArea(this);
+    cmdLoaderSwitchLayout = new QHBoxLayout(cmdLoaderSwitchArea);
+    cmdLoaderSwitchText = new ElaText(QStringLiteral("快捷命令路径"), cmdLoaderSwitchArea);
+    cmdLoaderSwitchPath = new ElaText("", cmdLoaderSwitchArea);
+    cmdLoaderPushButton = new ElaPushButton(cmdLoaderSwitchArea);
+
     // Mica 开关
     micaSwitchArea = new ElaScrollPageArea(this);
     micaSwitchLayout = new QHBoxLayout(micaSwitchArea);
@@ -103,6 +117,20 @@ void setting::configWidgets() {
     ipLoaderSwitchPath->setTextPixelSize(10);
     ipLoaderSwitchPath->setWordWrap(false);
     ipLoaderPushButton->setText(QStringLiteral("选择文件"));
+
+    // msg loader
+    msgLoaderSwitchText->setWordWrap(false);
+    msgLoaderSwitchText->setTextPixelSize(15);
+    msgLoaderSwitchPath->setTextPixelSize(10);
+    msgLoaderSwitchPath->setWordWrap(false);
+    msgLoaderPushButton->setText(QStringLiteral("选择文件"));
+
+    // cmd loader
+    cmdLoaderSwitchText->setWordWrap(false);
+    cmdLoaderSwitchText->setTextPixelSize(15);
+    cmdLoaderSwitchPath->setTextPixelSize(10);
+    cmdLoaderSwitchPath->setWordWrap(false);
+    cmdLoaderPushButton->setText(QStringLiteral("选择文件"));
 
     // mica
     micaSwitchText->setWordWrap(false);
@@ -156,6 +184,8 @@ void setting::loadSettings() {
     #endif
 
     ipLoaderSwitchPath->setText(settings->value("ip_loader_path").toString());
+    msgLoaderSwitchPath->setText(settings->value("msg_loader_path").toString());
+    cmdLoaderSwitchPath->setText(settings->value("cmd_loader_path").toString());
 }
 
 void setting::setupLayout() {
@@ -170,6 +200,20 @@ void setting::setupLayout() {
     ipLoaderSwitchLayout->addWidget(ipLoaderSwitchPath);
     ipLoaderSwitchLayout->addStretch();
     ipLoaderSwitchLayout->addWidget(ipLoaderPushButton);
+
+    // msg loader
+    msgLoaderSwitchLayout->addWidget(msgLoaderSwitchText);
+    msgLoaderSwitchLayout->addStretch();
+    msgLoaderSwitchLayout->addWidget(msgLoaderSwitchPath);
+    msgLoaderSwitchLayout->addStretch();
+    msgLoaderSwitchLayout->addWidget(msgLoaderPushButton);
+
+    // cmd loader
+    cmdLoaderSwitchLayout->addWidget(cmdLoaderSwitchText);
+    cmdLoaderSwitchLayout->addStretch();
+    cmdLoaderSwitchLayout->addWidget(cmdLoaderSwitchPath);
+    cmdLoaderSwitchLayout->addStretch();
+    cmdLoaderSwitchLayout->addWidget(cmdLoaderPushButton);
 
     // mica
     micaSwitchLayout->addWidget(micaSwitchText);
@@ -191,6 +235,8 @@ void setting::setupLayout() {
     // 主布局
     centerLayout->addWidget(modeSwitchArea);
     centerLayout->addWidget(ipLoaderSwitchArea);
+    centerLayout->addWidget(msgLoaderSwitchArea);
+    centerLayout->addWidget(cmdLoaderSwitchArea);
     centerLayout->addWidget(micaSwitchArea);
     centerLayout->addWidget(themeSwitchArea);
     centerLayout->addStretch();
@@ -199,6 +245,8 @@ void setting::setupLayout() {
 void setting::setupConnections() {
     connect(modeComboBox, &ElaComboBox::currentTextChanged, this, &setting::onComboBoxTextChanged);
     connect(ipLoaderPushButton, &ElaPushButton::clicked, this, &setting::onIpLoaderButtonClicked);
+    connect(msgLoaderPushButton, &ElaPushButton::clicked, this, &setting::onMsgLoaderButtonClicked);
+    connect(cmdLoaderPushButton, &ElaPushButton::clicked, this, &setting::onCmdLoaderButtonClicked);
     connect(micaButtonGroup, static_cast<void(QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, &setting::onMicaButtonClicked);
     connect(themeComboBox, QOverload<int>::of(&ElaComboBox::currentIndexChanged), this, &setting::onThemeComboBoxChanged);
 }
@@ -211,6 +259,25 @@ void setting::onIpLoaderButtonClicked() {
     ipLoaderSwitchPath->setText(file_name);
     SettingsManager::instance()->setValue("ip_loader_path", file_name);
 }
+
+void setting::onMsgLoaderButtonClicked() {
+    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.txt)"));
+    if (file_name == "") {
+        return;
+    }
+    msgLoaderSwitchPath->setText(file_name);
+    SettingsManager::instance()->setValue("msg_loader_path", file_name);
+}
+
+void setting::onCmdLoaderButtonClicked() {
+    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.txt)"));
+    if (file_name == "") {
+        return;
+    }
+    cmdLoaderSwitchPath->setText(file_name);
+    SettingsManager::instance()->setValue("cmd_loader_path", file_name);
+}
+
 
 void setting::onMicaButtonClicked(QAbstractButton *button) {
     SettingsManager::instance() -> setValue("mica_theme", button->text());

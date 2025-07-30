@@ -32,6 +32,8 @@ public:
 private slots:
     void onComboBoxTextChanged(QString text);
     void onIpLoaderButtonClicked();
+    void onMsgLoaderButtonClicked();
+    void onCmdLoaderButtonClicked();
     void onMicaButtonClicked(QAbstractButton *button);
     void onThemeComboBoxChanged(int index);
 
@@ -60,6 +62,20 @@ private:
     ElaText *ipLoaderSwitchText = nullptr;
     ElaText *ipLoaderSwitchPath = nullptr;
     ElaPushButton *ipLoaderPushButton = nullptr;
+
+    // 快捷消息加载
+    ElaScrollPageArea *msgLoaderSwitchArea = nullptr;
+    QHBoxLayout *msgLoaderSwitchLayout = nullptr;
+    ElaText *msgLoaderSwitchText = nullptr;
+    ElaText *msgLoaderSwitchPath = nullptr;
+    ElaPushButton *msgLoaderPushButton = nullptr;
+
+    // 快捷命令加载
+    ElaScrollPageArea *cmdLoaderSwitchArea = nullptr;
+    QHBoxLayout *cmdLoaderSwitchLayout = nullptr;
+    ElaText *cmdLoaderSwitchText = nullptr;
+    ElaText *cmdLoaderSwitchPath = nullptr;
+    ElaPushButton *cmdLoaderPushButton = nullptr;
 
     // Mica
     ElaScrollPageArea *micaSwitchArea = nullptr;
