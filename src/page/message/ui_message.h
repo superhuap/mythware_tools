@@ -47,7 +47,6 @@ public:
     QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout_2;
     ElaProgressBar *progressBar;
-    ElaText *progress;
     QSpacerItem *verticalSpacer_5;
 
     void setupUi(QWidget *message)
@@ -164,15 +163,6 @@ public:
 
         horizontalLayout_2->addWidget(progressBar);
 
-        progress = new ElaText(message);
-        progress->setObjectName(QString::fromUtf8("progress"));
-        sizePolicy1.setHeightForWidth(progress->sizePolicy().hasHeightForWidth());
-        progress->setSizePolicy(sizePolicy1);
-        progress->setScaledContents(false);
-        progress->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout_2->addWidget(progress);
-
 
         verticalLayout_2->addLayout(horizontalLayout_2);
 
@@ -199,7 +189,6 @@ public:
         label->setText(QCoreApplication::translate("message", "\345\277\253\346\215\267\346\266\210\346\201\257", nullptr));
         comboBox->setPlaceholderText(QString());
         pushButton_send->setText(QCoreApplication::translate("message", "\345\217\221\351\200\201", nullptr));
-        progress->setText(QCoreApplication::translate("message", "0%", nullptr));
     } // retranslateUi
 
 };

@@ -44,7 +44,6 @@ public:
     QSpacerItem *verticalSpacer_2;
     QHBoxLayout *horizontalLayout;
     ElaProgressBar *progressBar;
-    ElaText *progress;
     QSpacerItem *verticalSpacer_4;
 
     void setupUi(QWidget *command)
@@ -135,18 +134,6 @@ public:
 
         horizontalLayout->addWidget(progressBar);
 
-        progress = new ElaText(command);
-        progress->setObjectName(QString::fromUtf8("progress"));
-        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Maximum);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(progress->sizePolicy().hasHeightForWidth());
-        progress->setSizePolicy(sizePolicy3);
-        progress->setScaledContents(false);
-        progress->setAlignment(Qt::AlignCenter);
-
-        horizontalLayout->addWidget(progress);
-
 
         verticalLayout_2->addLayout(horizontalLayout);
 
@@ -172,7 +159,6 @@ public:
         label->setText(QCoreApplication::translate("command", "\345\277\253\346\215\267\345\221\275\344\273\244", nullptr));
         comboBox->setPlaceholderText(QString());
         pushButton_send->setText(QCoreApplication::translate("command", "\345\217\221\351\200\201", nullptr));
-        progress->setText(QCoreApplication::translate("command", "0%", nullptr));
     } // retranslateUi
 
 };

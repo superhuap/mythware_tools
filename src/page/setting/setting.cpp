@@ -204,7 +204,7 @@ void setting::setupConnections() {
 }
 
 void setting::onIpLoaderButtonClicked() {
-    QString file_name = QFileDialog::getOpenFileName(this, tr("打开文件"), QDir::homePath(), tr("文本文件 (*.txt)"));
+    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.txt)"));
     if (file_name == "") {
         return;
     }

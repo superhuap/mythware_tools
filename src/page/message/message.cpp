@@ -39,7 +39,6 @@ void message::setupConnections() {
 
 void message::onLoadDataButtonClicked() {
     TreeModel::instance()->reloadData();
-    ElaMessageBar::success(ElaMessageBarType::TopRight, "成功", "加载完成", 2500);
 }
 
 
