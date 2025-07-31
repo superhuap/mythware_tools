@@ -6,10 +6,14 @@
 
 #include "message.h"
 
+
+#include <QTextStream>
+#include <QDebug>
 #include "ElaMessageBar.h"
 #include "ui_message.h"
 #include "../../model/TreeModel.h"
 #include "../../item/TreeItem.h"
+#include "../../util/SettingManager.h"
 
 message::message(QWidget *parent) :
     QWidget(parent), ui(new Ui::message) {
@@ -30,18 +34,53 @@ void message::configWidgets() {
 
 void message::loadData() {
     ui->treeView->setModel(TreeModel::instance());
+    loadMsgData();
 }
 
 void message::setupConnections() {
-    connect(ui->pushButton_load, &ElaPushButton::clicked, this, &message::onLoadDataButtonClicked);
+    connect(ui->pushButton_load, &ElaPushButton::clicked, this, &message::onReLoadDataButtonClicked);
     connect(ui->pushButton_selectAll, &ElaPushButton::clicked, this, &message::onSelectAllButtonClicked);
+    connect(ui->pushButton_send, &ElaPushButton::clicked, this, &message::onSendButtonClicked);
 }
 
-void message::onLoadDataButtonClicked() {
+void message::onReLoadDataButtonClicked() {
     TreeModel::instance()->reloadData();
+    loadMsgData();
 }
 
 
 void message::onSelectAllButtonClicked() {
     TreeModel::instance()->selectAll();
+}
+
+void message::onSendButtonClicked() {
+    TreeModel * tree_model = TreeModel::instance();
+    ui->progressBar->setValue(0);
+    for (int i = 0; i < tree_model->getCheckedItems().length(); ++i) {
+        float progress = ((i + 1) * 100.0f) / tree_model->getCheckedItems().length();
+        ui->progressBar->setValue(progress);
+    }
+    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("发送成功"), 2500);
+}
+
+void message::loadMsgData() {
+    ui->comboBox->addItem("");
+    ui->comboBox->clear();
+    QFile file(SettingsManager::instance()->getValue("msg_loader_path").toString());
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    QTextStream in(&file);
+    int messageCount = 0;
+    ui->comboBox->addItem("");
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        if (line.isEmpty()) {
+            continue;
+        }
+        messageCount++;
+        ui->comboBox->addItem(line);
+    }
+    file.close();
+    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("加载了%1条消息").arg(messageCount), 2500);
 }

@@ -21,12 +21,14 @@ public:
 
 private slots:
     void onSelectAllButtonClicked();
-    void onLoadDataButtonClicked();
+    void onReLoadDataButtonClicked();
+    void onSendButtonClicked();
 
 private:
     Ui::message *ui;
     void configWidgets();
     void loadData();
+    void loadMsgData();
     void setupConnections();
 };
 
