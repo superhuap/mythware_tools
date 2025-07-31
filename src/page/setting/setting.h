@@ -17,6 +17,7 @@ class QVBoxLayout;
 class ElaToggleSwitch;
 class ElaScrollPageArea;
 class ElaRadioButton;
+class ElaSpinBox;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class setting; }
@@ -30,6 +31,7 @@ public:
     ~setting() override;
 
 private slots:
+    void onSpinBoxValueChanged(int value);
     void onComboBoxTextChanged(QString text);
     void onIpLoaderButtonClicked();
     void onMsgLoaderButtonClicked();
@@ -49,6 +51,12 @@ private:
 
     QWidget *centralWidget = nullptr;
     QVBoxLayout *centerLayout = nullptr;
+
+    // 端口选择
+    ElaScrollPageArea *portSwitchArea = nullptr;
+    QHBoxLayout *portSwitchLayout = nullptr;
+    ElaText *portSwitchText = nullptr;
+    ElaSpinBox *portSpinBox = nullptr;
 
     // 模式选择
     ElaScrollPageArea *modeSwitchArea = nullptr;

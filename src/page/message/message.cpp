@@ -30,6 +30,7 @@ message::~message() {
 void message::configWidgets() {
     ui->label->setTextPixelSize(15);
     ui->label_2->setTextPixelSize(15);
+    ui->spinBox->setButtonMode(ElaSpinBoxType::Side);
 }
 
 void message::loadData() {

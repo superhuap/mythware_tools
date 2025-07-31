@@ -10,6 +10,7 @@
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QButtonGroup>
+#include "qdebug.h"
 #include <ElaTheme.h>
 #include <ElaScrollPageArea.h>
 #include <ElaText.h>
@@ -17,6 +18,7 @@
 #include <ElaPushButton.h>
 #include <ElaRadioButton.h>
 #include <ElaApplication.h>
+#include <ElaSpinBox.h>
 
 
 setting::setting(QWidget *parent) :
@@ -38,6 +40,9 @@ setting::~setting() {
 
 void setting::initSettings() {
     QSettings * settings = SettingsManager::instance() -> settings();
+    if (settings->value("port").isNull()) {
+        settings->setValue("port", "4705");
+    }
     if (settings->value("run_mode").isNull()) {
         settings->setValue("run_mode", "cmd");
     }
@@ -55,6 +60,12 @@ void setting::createWidgets() {
     centerLayout = new QVBoxLayout(centralWidget);
     centerLayout->setContentsMargins(0, 0, 0, 0);
     centralWidget->setWindowTitle(" ");
+
+    // 模式选择
+    portSwitchArea = new ElaScrollPageArea(this);
+    portSwitchLayout = new QHBoxLayout(portSwitchArea);
+    portSwitchText = new ElaText(QStringLiteral("接收端口"), portSwitchArea);
+    portSpinBox = new ElaSpinBox(portSwitchArea);
 
     // 模式选择
     modeSwitchArea = new ElaScrollPageArea(this);
@@ -105,6 +116,13 @@ void setting::createWidgets() {
 }
 
 void setting::configWidgets() {
+    // port
+    portSwitchText->setWordWrap(false);
+    portSwitchText->setTextPixelSize(15);
+    portSpinBox->setButtonMode(ElaSpinBoxType::Side);
+    portSpinBox->setMinimum(0);
+    portSpinBox->setMaximum(65535);
+
     // mode
     modeSwitchText->setWordWrap(false);
     modeSwitchText->setTextPixelSize(15);
@@ -154,6 +172,7 @@ void setting::configWidgets() {
 void setting::loadSettings() {
     QSettings * settings = SettingsManager::instance() -> settings();
 
+    portSpinBox->setValue(settings->value("port", portSpinBox->value()).toInt());
     modeComboBox->setCurrentText(settings->value("run_mode").toString());
 
     eTheme->setThemeMode(settings->value("theme").toInt() == 0 ? ElaThemeType::Light : ElaThemeType::Dark);
@@ -189,6 +208,11 @@ void setting::loadSettings() {
 }
 
 void setting::setupLayout() {
+    // port
+    portSwitchLayout->addWidget(portSwitchText);
+    portSwitchLayout->addStretch();
+    portSwitchLayout->addWidget(portSpinBox);
+
     // mode
     modeSwitchLayout->addWidget(modeSwitchText);
     modeSwitchLayout->addStretch();
@@ -233,6 +257,7 @@ void setting::setupLayout() {
     themeSwitchLayout->addWidget(themeComboBox);
 
     // 主布局
+    centerLayout->addWidget(portSwitchArea);
     centerLayout->addWidget(modeSwitchArea);
     centerLayout->addWidget(ipLoaderSwitchArea);
     centerLayout->addWidget(msgLoaderSwitchArea);
@@ -243,12 +268,18 @@ void setting::setupLayout() {
 }
 
 void setting::setupConnections() {
+    connect(portSpinBox, QOverload<int>::of(&ElaSpinBox::valueChanged), this, &setting::onSpinBoxValueChanged);
     connect(modeComboBox, &ElaComboBox::currentTextChanged, this, &setting::onComboBoxTextChanged);
     connect(ipLoaderPushButton, &ElaPushButton::clicked, this, &setting::onIpLoaderButtonClicked);
     connect(msgLoaderPushButton, &ElaPushButton::clicked, this, &setting::onMsgLoaderButtonClicked);
     connect(cmdLoaderPushButton, &ElaPushButton::clicked, this, &setting::onCmdLoaderButtonClicked);
     connect(micaButtonGroup, static_cast<void(QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, &setting::onMicaButtonClicked);
     connect(themeComboBox, QOverload<int>::of(&ElaComboBox::currentIndexChanged), this, &setting::onThemeComboBoxChanged);
+}
+
+void setting::onSpinBoxValueChanged(int value) {
+    // qDebug() << value;
+    SettingsManager::instance()->setValue("port", value);
 }
 
 void setting::onIpLoaderButtonClicked() {
