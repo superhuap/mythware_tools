@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-set(CMAKE_PREFIX_PATH "/opt/homebrew/Cellar/qt@5/5.15.16_2")
+set(CMAKE_PREFIX_PATH "/opt/homebrew/Cellar/qt@5/5.15.17")
 
 file(GLOB_RECURSE SRC
         "src/*.h"

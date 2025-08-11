@@ -8,12 +8,14 @@
 
 
 #include <QTextStream>
+#include <QFile>
 #include <QDebug>
 #include "ElaMessageBar.h"
 #include "ui_message.h"
 #include "../../model/TreeModel.h"
 #include "../../item/TreeItem.h"
 #include "../../util/SettingManager.h"
+#include "../../util/SendingManager.h"
 
 message::message(QWidget *parent) :
     QWidget(parent), ui(new Ui::message) {
@@ -58,8 +60,9 @@ void message::onSendButtonClicked() {
     TreeModel * tree_model = TreeModel::instance();
     ui->progressBar->setValue(0);
     for (int i = 0; i < tree_model->getCheckedItems().length(); ++i) {
-        float progress = ((i + 1) * 100.0f) / tree_model->getCheckedItems().length();
-        ui->progressBar->setValue(progress);
+        QString message = !ui->comboBox->currentText().isEmpty() ? ui->comboBox->currentText() : ui->plainTextEdit_msg->toPlainText();
+        SendingManager::instance()->send("msg", message, tree_model->getCheckedItems().at(i)->getTitle());
+        ui->progressBar->setValue(((i + 1) * 100.0f) / tree_model->getCheckedItems().length());
     }
     ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("发送成功"), 2500);
 }

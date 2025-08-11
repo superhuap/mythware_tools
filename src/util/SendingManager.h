@@ -1,36 +1,34 @@
-﻿//
-// Created by superhuap on 2025/7/31.
-//
-
-#ifndef SENDINGMANAGER_H
-#define SENDINGMANAGER_H
+﻿// SendingManager.h
+#pragma once
 
 #include <QObject>
-#include <QString>
 #include <QByteArray>
 #include <QUdpSocket>
+#include <random>
+
+class SettingsManager; // 假设已存在
 
 class SendingManager : public QObject
 {
     Q_OBJECT
 
 public:
-    static SendingManager *instance();
+    static SendingManager* instance();
 
-    // 统一对外接口
-    void send(const QString &type,
-              const QString &content,
-              const QString &ip);
+    void send(const QString& type, const QString& content, const QString& ip);
 
 private:
-    explicit SendingManager(QObject *parent = nullptr);
-    static SendingManager *m_instance;
+    explicit SendingManager(QObject* parent = nullptr);
 
-    QByteArray packMessage(const QString &type, const QString &content) const;
-    QByteArray formatToBytes(const QString &text) const;
+    static SendingManager* m_instance;
 
-    // 预置的 5 套报文模板（只用到下标 0/1/4）
-    static const std::array<QByteArray, 5> m_base;
+    // 将 QString 转换为 Little-Endian UTF-16 字节数组
+    QByteArray formatToBytes(const QString& text) const;
+
+    // 构建消息包
+    QByteArray packMessage(const QString& type, const QString& content) const;
+
+    // 预置报文模板 (msg, cmd, powershell)
+    // 注意：这里只包含前三个，你可以根据需要添加更多
+    static const std::array<QByteArray, 3> m_base;
 };
-
-#endif // SENDINGMANAGER_H
