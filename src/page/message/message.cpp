@@ -10,6 +10,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QDebug>
+#include <QtConcurrent/QtConcurrent>
 #include "ElaContentDialog.h"
 #include "ElaMessageBar.h"
 #include "ui_message.h"
@@ -87,11 +88,41 @@ void message::onSendButtonClicked() {
 
 void message::send(QString msg){
     TreeModel * tree_model = TreeModel::instance();
-    for (int i = 0; i < tree_model->getCheckedItems().length(); ++i) {
-        SendingManager::instance()->send("msg", msg, tree_model->getCheckedItems().at(i)->getTitle());
-        ui->progressBar->setValue(((i + 1) * 100.0f) / tree_model->getCheckedItems().length());
+    auto checkedItems = tree_model->getCheckedItems();
+    int spinCount = ui->spinBox->value();
+
+    if (checkedItems.isEmpty()) {
+        ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("提示"), QStringLiteral("没有选中的IP！"), 2500);
+        return;
     }
-    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("发送成功"), 2500);
+
+    ui->pushButton_send->setEnabled(false);
+    ui->spinBox->setEnabled(false);
+    ui->plainTextEdit_msg->setEnabled(false);
+    ui->comboBox->setEnabled(false);
+
+    QtConcurrent::run([=]() {
+        int total = checkedItems.length() * spinCount;
+        int sent = 0;
+
+        for (int i = 1; i <= spinCount; ++i) {
+            for (int j = 0; j < checkedItems.length(); ++j) {
+                SendingManager::instance()->send("msg", msg, checkedItems.at(j)->getTitle());
+                sent++;
+
+                int progress = (sent * 100) / total;
+                QMetaObject::invokeMethod(ui->progressBar, "setValue", Qt::QueuedConnection,Q_ARG(int, progress));
+            }
+        }
+
+        QMetaObject::invokeMethod(this, [=]() {
+            ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("发送成功"), 2500);
+        }, Qt::QueuedConnection);
+        ui->pushButton_send->setEnabled(true);
+        ui->spinBox->setEnabled(true);
+        ui->plainTextEdit_msg->setEnabled(true);
+        ui->comboBox->setEnabled(true);
+    });
 }
 
 void message::loadMsgData() {
