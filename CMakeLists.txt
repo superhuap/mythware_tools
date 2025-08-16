@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.31)
+cmake_minimum_required(VERSION 3.50)
 project(mythware_tools)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -20,7 +20,7 @@ find_package(Qt5 COMPONENTS
         Network
         REQUIRED)
 
-add_executable(mythware_tools src/main.cpp ${SRC})
+add_executable(mythware_tools main.cpp ${SRC})
 
 target_include_directories(mythware_tools PRIVATE lib/include)
 

@@ -10,6 +10,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QDebug>
+#include "ElaContentDialog.h"
 #include "ElaMessageBar.h"
 #include "ui_message.h"
 #include "../../model/TreeModel.h"
@@ -33,6 +34,14 @@ void message::configWidgets() {
     ui->label->setTextPixelSize(15);
     ui->label_2->setTextPixelSize(15);
     ui->spinBox->setButtonMode(ElaSpinBoxType::Side);
+    dialog = new ElaContentDialog(this);
+    dialog->setLeftButtonText("取消");
+    dialog->setMiddleButtonText("输入框");
+    dialog->setRightButtonText("快捷消息");
+    label = new ElaText("您想发送输入框还是快捷消息？", dialog);
+    label->setTextPixelSize(15);
+    label->setAlignment(Qt::AlignCenter);
+    dialog->setCentralWidget(label);
 }
 
 void message::loadData() {
@@ -44,6 +53,17 @@ void message::setupConnections() {
     connect(ui->pushButton_load, &ElaPushButton::clicked, this, &message::onReLoadDataButtonClicked);
     connect(ui->pushButton_selectAll, &ElaPushButton::clicked, this, &message::onSelectAllButtonClicked);
     connect(ui->pushButton_send, &ElaPushButton::clicked, this, &message::onSendButtonClicked);
+    connect(dialog, &ElaContentDialog::leftButtonClicked, [this]() {
+        dialog->close();
+    });
+    connect(dialog, &ElaContentDialog::middleButtonClicked, [this]() {
+        send(ui->plainTextEdit_msg->toPlainText());
+        dialog->close();
+    });
+    connect(dialog, &ElaContentDialog::rightButtonClicked, [this]() {
+        send(ui->comboBox->currentText());
+        dialog->close();
+    });
 }
 
 void message::onReLoadDataButtonClicked() {
@@ -57,11 +77,18 @@ void message::onSelectAllButtonClicked() {
 }
 
 void message::onSendButtonClicked() {
-    TreeModel * tree_model = TreeModel::instance();
     ui->progressBar->setValue(0);
+    if (!ui->plainTextEdit_msg->toPlainText().isEmpty() && (ui->comboBox->currentText() != "")){
+        dialog->show();
+    } else {
+        send(!ui->comboBox->currentText().isEmpty() ? ui->comboBox->currentText() : ui->plainTextEdit_msg->toPlainText());
+    }
+}
+
+void message::send(QString msg){
+    TreeModel * tree_model = TreeModel::instance();
     for (int i = 0; i < tree_model->getCheckedItems().length(); ++i) {
-        QString message = !ui->comboBox->currentText().isEmpty() ? ui->comboBox->currentText() : ui->plainTextEdit_msg->toPlainText();
-        SendingManager::instance()->send("msg", message, tree_model->getCheckedItems().at(i)->getTitle());
+        SendingManager::instance()->send("msg", msg, tree_model->getCheckedItems().at(i)->getTitle());
         ui->progressBar->setValue(((i + 1) * 100.0f) / tree_model->getCheckedItems().length());
     }
     ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("发送成功"), 2500);

@@ -7,6 +7,8 @@
 
 #include <QWidget>
 
+class ElaContentDialog;
+class ElaText;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class message; }
@@ -26,10 +28,13 @@ private slots:
 
 private:
     Ui::message *ui;
+    ElaContentDialog* dialog;
+    ElaText* label;
     void configWidgets();
     void loadData();
     void loadMsgData();
     void setupConnections();
+    void send(QString msg);
 };
 
 

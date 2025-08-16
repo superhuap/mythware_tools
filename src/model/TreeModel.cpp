@@ -31,6 +31,8 @@ TreeModel::~TreeModel()
 void TreeModel::setupModelData()
 {
     int invalidCount = 0;
+    int validCount = 0;
+
     QFile file(SettingsManager::instance()->getValue("ip_loader_path").toString());
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         ElaMessageBar::error(ElaMessageBarType::TopRight, QStringLiteral("错误"), QStringLiteral("没有选择ip文件"), 2500);
@@ -53,12 +55,13 @@ void TreeModel::setupModelData()
             continue;
         }
         new TreeItem(line, m_root);
+        validCount++;
     }
     file.close();
     if (invalidCount > 0) {
-        ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("警告"), QStringLiteral("有 %1 个IP地址格式不合法。").arg(invalidCount), 2500);
+        ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("警告"), QStringLiteral("有%1个IP地址格式不合法。").arg(invalidCount), 2500);
     }
-    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("加载完成"), 2500);
+    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("加载%1个IP").arg(validCount), 2500);
 }
 
 QVariant TreeModel::data(const QModelIndex& index, int role) const
