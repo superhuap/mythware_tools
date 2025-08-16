@@ -27,7 +27,7 @@ class setting : public ElaScrollPage {
 Q_OBJECT
 
 public:
-    explicit setting(QWidget *parent = nullptr);
+    explicit setting(QWidget *parent);
     ~setting() override;
 
 private slots:
@@ -49,59 +49,59 @@ private:
 
     Ui::setting *ui;
 
-    QWidget *centralWidget = nullptr;
-    QVBoxLayout *centerLayout = nullptr;
+    QWidget *centralWidget;
+    QVBoxLayout *centerLayout;
 
     // 端口选择
-    ElaScrollPageArea *portSwitchArea = nullptr;
-    QHBoxLayout *portSwitchLayout = nullptr;
-    ElaText *portSwitchText = nullptr;
-    ElaSpinBox *portSpinBox = nullptr;
+    ElaScrollPageArea *portSwitchArea;
+    QHBoxLayout *portSwitchLayout;
+    ElaText *portSwitchText;
+    ElaSpinBox *portSpinBox;
 
     // 模式选择
-    ElaScrollPageArea *modeSwitchArea = nullptr;
-    QHBoxLayout *modeSwitchLayout = nullptr;
-    ElaText *modeSwitchText = nullptr;
-    ElaComboBox *modeComboBox = nullptr;
+    ElaScrollPageArea *modeSwitchArea;
+    QHBoxLayout *modeSwitchLayout;
+    ElaText *modeSwitchText;
+    ElaComboBox *modeComboBox;
 
     // IP 加载
-    ElaScrollPageArea *ipLoaderSwitchArea = nullptr;
-    QHBoxLayout *ipLoaderSwitchLayout = nullptr;
-    ElaText *ipLoaderSwitchText = nullptr;
-    ElaText *ipLoaderSwitchPath = nullptr;
-    ElaPushButton *ipLoaderPushButton = nullptr;
+    ElaScrollPageArea *ipLoaderSwitchArea;
+    QHBoxLayout *ipLoaderSwitchLayout;
+    ElaText *ipLoaderSwitchText;
+    ElaText *ipLoaderSwitchPath;
+    ElaPushButton *ipLoaderPushButton;
 
     // 快捷消息加载
-    ElaScrollPageArea *msgLoaderSwitchArea = nullptr;
-    QHBoxLayout *msgLoaderSwitchLayout = nullptr;
-    ElaText *msgLoaderSwitchText = nullptr;
-    ElaText *msgLoaderSwitchPath = nullptr;
-    ElaPushButton *msgLoaderPushButton = nullptr;
+    ElaScrollPageArea *msgLoaderSwitchArea;
+    QHBoxLayout *msgLoaderSwitchLayout;
+    ElaText *msgLoaderSwitchText;
+    ElaText *msgLoaderSwitchPath;
+    ElaPushButton *msgLoaderPushButton;
 
     // 快捷命令加载
-    ElaScrollPageArea *cmdLoaderSwitchArea = nullptr;
-    QHBoxLayout *cmdLoaderSwitchLayout = nullptr;
-    ElaText *cmdLoaderSwitchText = nullptr;
-    ElaText *cmdLoaderSwitchPath = nullptr;
-    ElaPushButton *cmdLoaderPushButton = nullptr;
+    ElaScrollPageArea *cmdLoaderSwitchArea;
+    QHBoxLayout *cmdLoaderSwitchLayout;
+    ElaText *cmdLoaderSwitchText;
+    ElaText *cmdLoaderSwitchPath;
+    ElaPushButton *cmdLoaderPushButton;
 
     // Mica
-    ElaScrollPageArea *micaSwitchArea = nullptr;
-    QHBoxLayout *micaSwitchLayout = nullptr;
-    QButtonGroup *micaButtonGroup = nullptr;
-    ElaText *micaSwitchText = nullptr;
-    ElaRadioButton *normalButton = nullptr;
-    ElaRadioButton *elamicaButton = nullptr;
-    ElaRadioButton *micaButton = nullptr;
-    ElaRadioButton *micaAltButton = nullptr;
-    ElaRadioButton *acrylicButton = nullptr;
-    ElaRadioButton *dwmBlurButton = nullptr;
+    ElaScrollPageArea *micaSwitchArea;
+    QHBoxLayout *micaSwitchLayout;
+    QButtonGroup *micaButtonGroup;
+    ElaText *micaSwitchText;
+    ElaRadioButton *normalButton;
+    ElaRadioButton *elamicaButton;
+    ElaRadioButton *micaButton;
+    ElaRadioButton *micaAltButton;
+    ElaRadioButton *acrylicButton;
+    ElaRadioButton *dwmBlurButton;
 
     // 主题
-    ElaScrollPageArea *themeSwitchArea = nullptr;
-    QHBoxLayout *themeSwitchLayout = nullptr;
-    ElaText *themeSwitchText = nullptr;
-    ElaComboBox *themeComboBox = nullptr;
+    ElaScrollPageArea *themeSwitchArea;
+    QHBoxLayout *themeSwitchLayout;
+    ElaText *themeSwitchText;
+    ElaComboBox *themeComboBox;
 };
 
 
