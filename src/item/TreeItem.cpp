@@ -1,4 +1,4 @@
-// TreeItem.cpp
+﻿// TreeItem.cpp
 #include "TreeItem.h"
 
 TreeItem::TreeItem(const QString& title, TreeItem* parent)

@@ -36,10 +36,10 @@ void message::configWidgets() {
     ui->label_2->setTextPixelSize(15);
     ui->spinBox->setButtonMode(ElaSpinBoxType::Side);
     dialog = new ElaContentDialog(this);
-    dialog->setLeftButtonText("取消");
-    dialog->setMiddleButtonText("输入框");
-    dialog->setRightButtonText("快捷消息");
-    label = new ElaText("您想发送输入框还是快捷消息？", dialog);
+    dialog->setLeftButtonText(QStringLiteral("取消"));
+    dialog->setMiddleButtonText(QStringLiteral("输入框"));
+    dialog->setRightButtonText(QStringLiteral("快捷消息"));
+    label = new ElaText(QStringLiteral("您想发送输入框还是快捷消息？"), dialog);
     label->setTextPixelSize(15);
     label->setAlignment(Qt::AlignCenter);
     dialog->setCentralWidget(label);
