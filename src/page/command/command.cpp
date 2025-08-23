@@ -8,13 +8,13 @@
 #include "ui_command.h"
 #include <QDomElement>
 #include <QtConcurrent/QtConcurrent>
-#include "ElaMessageBar.h"
+#include <ElaMessageBar.h>
+#include <ElaContentDialog.h>
 #include "../../item/TreeItem.h"
 #include "../../model/TreeModel.h"
 #include "../../util/XmlLoaderHelper.h"
 #include "../../util/SettingManager.h"
 #include "../../util/SendingHelper.h"
-#include "ElaContentDialog.h"
 
 command::command(QWidget *parent) :
     QWidget(parent), ui(new Ui::command) {

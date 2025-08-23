@@ -28,6 +28,7 @@ ParsedXmlResult loadAndParseXML(const QString& settingKey, const QString& expect
                              QStringLiteral("错误"),
                              QStringLiteral("无法打开文件：%1").arg(filePath),
                              SettingsManager::instance()->getValue("message_bar_msec").toInt());
+        SettingsManager::instance()->remove(settingKey);
         return result;
     }
 
@@ -42,6 +43,7 @@ ParsedXmlResult loadAndParseXML(const QString& settingKey, const QString& expect
                              QStringLiteral("XML格式错误，第%1行：\n%2")
                                      .arg(errorLine).arg(errorStr),
                              SettingsManager::instance()->getValue("message_bar_msec").toInt());
+        SettingsManager::instance()->remove(settingKey);
 
         result.errorMessage = errorStr;
         result.errorLine = errorLine;

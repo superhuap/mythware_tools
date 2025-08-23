@@ -1,13 +1,13 @@
 ﻿// TreeModel.cpp
 #include "TreeModel.h"
-#include "../item/TreeItem.h"
-#include "../util/SettingManager.h"
 #include <QDebug>
-#include "QDomDocument"
-#include "../util/XmlLoaderHelper.h"
+#include <QDomDocument>
 #include <QTextStream>
 #include <ElaMessageBar.h>
 #include <qregularexpression.h>
+#include "../item/TreeItem.h"
+#include "../util/SettingManager.h"
+#include "../util/XmlLoaderHelper.h"
 
 // 静态成员定义
 TreeModel* TreeModel::instance(QObject* parent)
@@ -36,7 +36,6 @@ void TreeModel::setupModelData()
     // 调用通用解析函数
     ParsedXmlResult result = loadAndParseXML("ip_loader_path", "ip_list");
     if (!result.isValid) {
-        SettingsManager::instance()->setValue("ip_loader_path", ""); // 清除无效路径
         return;
     }
 

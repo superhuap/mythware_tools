@@ -163,6 +163,7 @@ public:
         sizePolicy.setHeightForWidth(progressBar->sizePolicy().hasHeightForWidth());
         progressBar->setSizePolicy(sizePolicy);
         progressBar->setValue(0);
+        progressBar->setTextVisible(false);
         progressBar->setInvertedAppearance(false);
 
         horizontalLayout_2->addWidget(progressBar);

@@ -5,11 +5,11 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_message.h" resolved
 
 #include "message.h"
+#include "ui_message.h"
 #include <QDomElement>
 #include <QtConcurrent/QtConcurrent>
-#include "ElaContentDialog.h"
-#include "ElaMessageBar.h"
-#include "ui_message.h"
+#include <ElaContentDialog.h>
+#include <ElaMessageBar.h>
 #include "../../model/TreeModel.h"
 #include "../../item/TreeItem.h"
 #include "../../util/SettingManager.h"

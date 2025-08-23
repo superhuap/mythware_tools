@@ -6,11 +6,9 @@
 
 #include "setting.h"
 #include "ui_setting.h"
-#include "../../util/SettingManager.h"
 #include <QHBoxLayout>
 #include <QFileDialog>
 #include <QButtonGroup>
-#include "qdebug.h"
 #include <ElaTheme.h>
 #include <ElaScrollPageArea.h>
 #include <ElaText.h>
@@ -19,8 +17,7 @@
 #include <ElaRadioButton.h>
 #include <ElaApplication.h>
 #include <ElaSpinBox.h>
-#include <ElaDoubleSpinBox.h>
-
+#include "../../util/SettingManager.h"
 
 setting::setting(QWidget *parent) :
     ElaScrollPage(parent), ui(new Ui::setting) {
@@ -122,7 +119,7 @@ void setting::createWidgets() {
     messageBarMsecSwitchArea = new ElaScrollPageArea(this);
     messageBarMsecSwitchLayout = new QHBoxLayout(messageBarMsecSwitchArea);
     messageBarMsecSwitchText = new ElaText(QStringLiteral("消息提示显示时间"), messageBarMsecSwitchArea);
-    messageBarMsecDoubleSpinBox = new ElaDoubleSpinBox(messageBarMsecSwitchArea);
+    messageBarMsecSpinBox = new ElaSpinBox(messageBarMsecSwitchArea);
 }
 
 void setting::configWidgets() {
@@ -181,10 +178,10 @@ void setting::configWidgets() {
     // message bar
     messageBarMsecSwitchText->setWordWrap(false);
     messageBarMsecSwitchText->setTextPixelSize(15);
-    messageBarMsecDoubleSpinBox->setButtonMode(ElaSpinBoxType::Side);
-    messageBarMsecDoubleSpinBox->setMinimum(0);
-    messageBarMsecDoubleSpinBox->setMaximum(10);
-    messageBarMsecDoubleSpinBox->setSingleStep(0.1);
+    messageBarMsecSpinBox->setButtonMode(ElaSpinBoxType::Side);
+    messageBarMsecSpinBox->setMinimum(100);
+    messageBarMsecSpinBox->setMaximum(10000);
+    messageBarMsecSpinBox->setSingleStep(100);
 }
 
 void setting::loadSettings() {
@@ -224,7 +221,7 @@ void setting::loadSettings() {
     msgLoaderSwitchPath->setText(settings->value("msg_loader_path").toString());
     cmdLoaderSwitchPath->setText(settings->value("cmd_loader_path").toString());
 
-    messageBarMsecDoubleSpinBox->setValue(settings->value("message_bar_msec").toDouble());
+    messageBarMsecSpinBox->setValue(settings->value("message_bar_msec").toInt());
 }
 
 void setting::setupLayout() {
@@ -279,7 +276,7 @@ void setting::setupLayout() {
     // message bar
     messageBarMsecSwitchLayout->addWidget(messageBarMsecSwitchText);
     messageBarMsecSwitchLayout->addStretch();
-    messageBarMsecSwitchLayout->addWidget(messageBarMsecDoubleSpinBox);
+    messageBarMsecSwitchLayout->addWidget(messageBarMsecSpinBox);
 
     // 主布局
     centerLayout->addWidget(portSwitchArea);
@@ -294,17 +291,17 @@ void setting::setupLayout() {
 }
 
 void setting::setupConnections() {
-    connect(portSpinBox, QOverload<int>::of(&ElaSpinBox::valueChanged), this, &setting::onSpinBoxValueChanged);
+    connect(portSpinBox, QOverload<int>::of(&ElaSpinBox::valueChanged), this, &setting::onPortSpinBoxValueChanged);
     connect(modeComboBox, &ElaComboBox::currentTextChanged, this, &setting::onComboBoxTextChanged);
     connect(ipLoaderPushButton, &ElaPushButton::clicked, this, &setting::onIpLoaderButtonClicked);
     connect(msgLoaderPushButton, &ElaPushButton::clicked, this, &setting::onMsgLoaderButtonClicked);
     connect(cmdLoaderPushButton, &ElaPushButton::clicked, this, &setting::onCmdLoaderButtonClicked);
     connect(micaButtonGroup, static_cast<void(QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, &setting::onMicaButtonClicked);
     connect(themeComboBox, QOverload<int>::of(&ElaComboBox::currentIndexChanged), this, &setting::onThemeComboBoxChanged);
-    connect(messageBarMsecDoubleSpinBox, QOverload<double>::of(&ElaDoubleSpinBox::valueChanged), this, &setting::onDoubleSpinBoxValueChanged);
+    connect(messageBarMsecSpinBox, QOverload<int>::of(&ElaSpinBox::valueChanged), this, &setting::onSpinBoxValueChanged);
 }
 
-void setting::onSpinBoxValueChanged(int value) {
+void setting::onPortSpinBoxValueChanged(int value) {
     SettingsManager::instance()->setValue("port", value);
 }
 
@@ -365,8 +362,8 @@ void setting::onComboBoxTextChanged(QString text) {
     SettingsManager::instance() -> setValue("run_mode", text);
 }
 
-void setting::onDoubleSpinBoxValueChanged(double value) {
-    SettingsManager::instance() -> setValue("message_bar_msec", (int) value*1000);
+void setting::onSpinBoxValueChanged(double value) {
+    SettingsManager::instance() -> setValue("message_bar_msec", value);
 }
 
 

@@ -101,7 +101,7 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 if(TARGET_PLATFORM STREQUAL "WIN32" AND QT_RUNTIME STREQUAL "MD")
-    file(COPY "lib/dll/ElaWidgetTools.dll" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    file(COPY "lib/windows/dll/ElaWidgetTools.dll" DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
             COMMAND "${QT_ROOT}/bin/windeployqt" "$<TARGET_FILE:${PROJECT_NAME}>"

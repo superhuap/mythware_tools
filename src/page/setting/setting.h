@@ -17,7 +17,6 @@ class QVBoxLayout;
 class ElaScrollPageArea;
 class ElaRadioButton;
 class ElaSpinBox;
-class ElaDoubleSpinBox;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class setting; }
@@ -31,14 +30,14 @@ public:
     ~setting() override;
 
 private slots:
-    void onSpinBoxValueChanged(int value);
+    void onPortSpinBoxValueChanged(int value);
     void onComboBoxTextChanged(QString text);
     void onIpLoaderButtonClicked();
     void onMsgLoaderButtonClicked();
     void onCmdLoaderButtonClicked();
     void onMicaButtonClicked(QAbstractButton *button);
     void onThemeComboBoxChanged(int index);
-    void onDoubleSpinBoxValueChanged(double value);
+    void onSpinBoxValueChanged(double value);
 
 private:
     void initSettings();
@@ -108,7 +107,7 @@ private:
     ElaScrollPageArea *messageBarMsecSwitchArea;
     QHBoxLayout *messageBarMsecSwitchLayout;
     ElaText *messageBarMsecSwitchText;
-    ElaDoubleSpinBox *messageBarMsecDoubleSpinBox;
+    ElaSpinBox *messageBarMsecSpinBox;
 };
 
 
