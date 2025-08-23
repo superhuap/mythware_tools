@@ -112,6 +112,7 @@ void message::send(QString msg){
 
                 int progress = (sent * 100) / total;
                 QMetaObject::invokeMethod(ui->progressBar, "setValue", Qt::QueuedConnection,Q_ARG(int, progress));
+                QMetaObject::invokeMethod(ui->label_Progress, "setText", Qt::QueuedConnection,Q_ARG(QString, QString::number(progress) + "%"));
             }
         }
 

@@ -1,7 +1,7 @@
-﻿/********************************************************************************
+/********************************************************************************
 ** Form generated from reading UI file 'message.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.16
+** Created by: Qt User Interface Compiler version 5.15.17
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -47,6 +47,7 @@ public:
     QSpacerItem *verticalSpacer_3;
     QHBoxLayout *horizontalLayout_2;
     ElaProgressBar *progressBar;
+    ElaText *label_Progress;
     QSpacerItem *verticalSpacer_5;
 
     void setupUi(QWidget *message)
@@ -71,6 +72,8 @@ public:
         verticalLayout->addWidget(pushButton_selectAll);
 
         treeView = new ElaTreeView(message);
+//        treeView->setObjectName(QString::fromUtf8("treeView"));
+//        treeView->setStyleSheet(QString::fromUtf8(""));
 
         verticalLayout->addWidget(treeView);
 
@@ -80,6 +83,7 @@ public:
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         plainTextEdit_msg = new ElaPlainTextEdit(message);
+//        plainTextEdit_msg->setObjectName(QString::fromUtf8("plainTextEdit_msg"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -166,6 +170,12 @@ public:
 
         verticalLayout_2->addLayout(horizontalLayout_2);
 
+        label_Progress = new ElaText(message);
+        label_Progress->setObjectName(QString::fromUtf8("label_Progress"));
+        label_Progress->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_2->addWidget(label_Progress);
+
         verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
         verticalLayout_2->addItem(verticalSpacer_5);
@@ -189,6 +199,7 @@ public:
         label->setText(QCoreApplication::translate("message", "\345\277\253\346\215\267\346\266\210\346\201\257", nullptr));
         comboBox->setPlaceholderText(QString());
         pushButton_send->setText(QCoreApplication::translate("message", "\345\217\221\351\200\201", nullptr));
+        label_Progress->setText(QCoreApplication::translate("message", "0%", nullptr));
     } // retranslateUi
 
 };

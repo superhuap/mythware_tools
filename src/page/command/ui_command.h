@@ -1,7 +1,7 @@
-﻿/********************************************************************************
+/********************************************************************************
 ** Form generated from reading UI file 'command.ui'
 **
-** Created by: Qt User Interface Compiler version 5.15.16
+** Created by: Qt User Interface Compiler version 5.15.17
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -44,6 +44,7 @@ public:
     QSpacerItem *verticalSpacer_2;
     QHBoxLayout *horizontalLayout;
     ElaProgressBar *progressBar;
+    ElaText *label_Progress;
     QSpacerItem *verticalSpacer_4;
 
     void setupUi(QWidget *command)
@@ -66,6 +67,7 @@ public:
         verticalLayout->addWidget(pushButton_selectAll);
 
         treeView = new ElaTreeView(command);
+//        treeView->setObjectName(QString::fromUtf8("treeView"));
 
         verticalLayout->addWidget(treeView);
 
@@ -75,6 +77,7 @@ public:
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
         plainTextEdit_cmd = new ElaPlainTextEdit(command);
+//        plainTextEdit_cmd->setObjectName(QString::fromUtf8("plainTextEdit_cmd"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -130,12 +133,19 @@ public:
         sizePolicy2.setHeightForWidth(progressBar->sizePolicy().hasHeightForWidth());
         progressBar->setSizePolicy(sizePolicy2);
         progressBar->setValue(0);
+        progressBar->setTextVisible(false);
         progressBar->setInvertedAppearance(false);
 
         horizontalLayout->addWidget(progressBar);
 
 
         verticalLayout_2->addLayout(horizontalLayout);
+
+        label_Progress = new ElaText(command);
+        label_Progress->setObjectName(QString::fromUtf8("label_Progress"));
+        label_Progress->setAlignment(Qt::AlignCenter);
+
+        verticalLayout_2->addWidget(label_Progress);
 
         verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
 
@@ -159,6 +169,7 @@ public:
         label->setText(QCoreApplication::translate("command", "\345\277\253\346\215\267\345\221\275\344\273\244", nullptr));
         comboBox->setPlaceholderText(QString());
         pushButton_send->setText(QCoreApplication::translate("command", "\345\217\221\351\200\201", nullptr));
+        label_Progress->setText(QCoreApplication::translate("command", "0%", nullptr));
     } // retranslateUi
 
 };

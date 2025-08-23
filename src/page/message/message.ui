@@ -186,6 +186,16 @@
       </layout>
      </item>
      <item>
+      <widget class="ElaText" name="label_Progress">
+       <property name="text">
+        <string>0%</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="verticalSpacer_5">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
@@ -229,14 +239,14 @@
    <header>elatext.h</header>
   </customwidget>
   <customwidget>
-   <class>ElaSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>elaspinbox.h</header>
-  </customwidget>
-  <customwidget>
    <class>ElaTreeView</class>
    <extends>QTreeView</extends>
    <header>elatreeview.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ElaSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>elaspinbox.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
