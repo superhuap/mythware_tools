@@ -2,7 +2,7 @@
 <ip_list>
     <ip>
         <name>张三</name>
-        <address>192.168.101.26</address>
+        <address>192.168.56.129</address>
     </ip>
     <ip>
         <name>李四</name>
