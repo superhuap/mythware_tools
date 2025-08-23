@@ -92,7 +92,7 @@ void message::send(QString msg){
     int spinCount = ui->spinBox->value();
 
     if (checkedItems.isEmpty()) {
-        ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("提示"), QStringLiteral("没有选中的IP！"), 2500);
+        ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("提示"), QStringLiteral("没有选中的IP！"), SettingsManager::instance()->getValue("message_bar_msec").toInt());
         return;
     }
 
@@ -117,7 +117,7 @@ void message::send(QString msg){
         }
 
         QMetaObject::invokeMethod(this, [=]() {
-            ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("发送成功"), 2500);
+            ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("发送成功"), SettingsManager::instance()->getValue("message_bar_msec").toInt());
         }, Qt::QueuedConnection);
         ui->pushButton_send->setEnabled(true);
         ui->spinBox->setEnabled(true);
@@ -145,5 +145,5 @@ void message::loadMsgData() {
         ui->comboBox->addItem(line);
     }
     file.close();
-    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("加载了%1条消息").arg(messageCount), 2500);
+    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("加载了%1条消息").arg(messageCount), SettingsManager::instance()->getValue("message_bar_msec").toInt());
 }

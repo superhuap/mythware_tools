@@ -14,10 +14,10 @@ class QHBoxLayout;
 class ElaComboBox;
 class ElaText;
 class QVBoxLayout;
-class ElaToggleSwitch;
 class ElaScrollPageArea;
 class ElaRadioButton;
 class ElaSpinBox;
+class ElaDoubleSpinBox;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class setting; }
@@ -38,6 +38,7 @@ private slots:
     void onCmdLoaderButtonClicked();
     void onMicaButtonClicked(QAbstractButton *button);
     void onThemeComboBoxChanged(int index);
+    void onDoubleSpinBoxValueChanged(double value);
 
 private:
     void initSettings();
@@ -102,6 +103,12 @@ private:
     QHBoxLayout *themeSwitchLayout;
     ElaText *themeSwitchText;
     ElaComboBox *themeComboBox;
+
+    // 消息提示显示时间
+    ElaScrollPageArea *messageBarMsecSwitchArea;
+    QHBoxLayout *messageBarMsecSwitchLayout;
+    ElaText *messageBarMsecSwitchText;
+    ElaDoubleSpinBox *messageBarMsecDoubleSpinBox;
 };
 
 

@@ -35,7 +35,7 @@ void TreeModel::setupModelData()
 
     QFile file(SettingsManager::instance()->getValue("ip_loader_path").toString());
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        ElaMessageBar::error(ElaMessageBarType::TopRight, QStringLiteral("错误"), QStringLiteral("没有选择ip文件"), 2500);
+        ElaMessageBar::error(ElaMessageBarType::TopRight, QStringLiteral("错误"), QStringLiteral("没有选择ip文件"), SettingsManager::instance()->getValue("message_bar_msec").toInt());
         SettingsManager::instance()->setValue("ip_loader_path", "");
         return ;
     }
@@ -59,9 +59,9 @@ void TreeModel::setupModelData()
     }
     file.close();
     if (invalidCount > 0) {
-        ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("警告"), QStringLiteral("有%1个IP地址格式不合法。").arg(invalidCount), 2500);
+        ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("警告"), QStringLiteral("有%1个IP地址格式不合法。").arg(invalidCount), SettingsManager::instance()->getValue("message_bar_msec").toInt());
     }
-    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("加载%1个IP").arg(validCount), 2500);
+    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("加载%1个IP").arg(validCount), SettingsManager::instance()->getValue("message_bar_msec").toInt());
 }
 
 QVariant TreeModel::data(const QModelIndex& index, int role) const

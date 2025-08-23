@@ -19,6 +19,7 @@
 #include <ElaRadioButton.h>
 #include <ElaApplication.h>
 #include <ElaSpinBox.h>
+#include <ElaDoubleSpinBox.h>
 
 
 setting::setting(QWidget *parent) :
@@ -51,6 +52,9 @@ void setting::initSettings() {
     }
     if (settings->value("mica_theme").isNull()) {
         settings->setValue("mica_theme", "Normal");
+    }
+    if (settings->value("message_bar_msec").isNull()){
+        settings->setValue("message_bar_msec", 1500);
     }
 }
 
@@ -113,6 +117,12 @@ void setting::createWidgets() {
     themeSwitchLayout = new QHBoxLayout(themeSwitchArea);
     themeSwitchText = new ElaText(QStringLiteral("主题切换"), themeSwitchArea);
     themeComboBox = new ElaComboBox(themeSwitchArea);
+
+    // 消息提示显示时间
+    messageBarMsecSwitchArea = new ElaScrollPageArea(this);
+    messageBarMsecSwitchLayout = new QHBoxLayout(messageBarMsecSwitchArea);
+    messageBarMsecSwitchText = new ElaText(QStringLiteral("消息提示显示时间"), messageBarMsecSwitchArea);
+    messageBarMsecDoubleSpinBox = new ElaDoubleSpinBox(messageBarMsecSwitchArea);
 }
 
 void setting::configWidgets() {
@@ -167,6 +177,14 @@ void setting::configWidgets() {
     themeSwitchText->setTextPixelSize(15);
     themeComboBox->addItem(QStringLiteral("日间模式"));
     themeComboBox->addItem(QStringLiteral("夜间模式"));
+
+    // message bar
+    messageBarMsecSwitchText->setWordWrap(false);
+    messageBarMsecSwitchText->setTextPixelSize(15);
+    messageBarMsecDoubleSpinBox->setButtonMode(ElaSpinBoxType::Side);
+    messageBarMsecDoubleSpinBox->setMinimum(0);
+    messageBarMsecDoubleSpinBox->setMaximum(10);
+    messageBarMsecDoubleSpinBox->setSingleStep(0.1);
 }
 
 void setting::loadSettings() {
@@ -205,6 +223,8 @@ void setting::loadSettings() {
     ipLoaderSwitchPath->setText(settings->value("ip_loader_path").toString());
     msgLoaderSwitchPath->setText(settings->value("msg_loader_path").toString());
     cmdLoaderSwitchPath->setText(settings->value("cmd_loader_path").toString());
+
+    messageBarMsecDoubleSpinBox->setValue(settings->value("message_bar_msec").toDouble());
 }
 
 void setting::setupLayout() {
@@ -256,6 +276,11 @@ void setting::setupLayout() {
     themeSwitchLayout->addStretch();
     themeSwitchLayout->addWidget(themeComboBox);
 
+    // message bar
+    messageBarMsecSwitchLayout->addWidget(messageBarMsecSwitchText);
+    messageBarMsecSwitchLayout->addStretch();
+    messageBarMsecSwitchLayout->addWidget(messageBarMsecDoubleSpinBox);
+
     // 主布局
     centerLayout->addWidget(portSwitchArea);
     centerLayout->addWidget(modeSwitchArea);
@@ -264,6 +289,7 @@ void setting::setupLayout() {
     centerLayout->addWidget(cmdLoaderSwitchArea);
     centerLayout->addWidget(micaSwitchArea);
     centerLayout->addWidget(themeSwitchArea);
+    centerLayout->addWidget(messageBarMsecSwitchArea);
     centerLayout->addStretch();
 }
 
@@ -275,10 +301,10 @@ void setting::setupConnections() {
     connect(cmdLoaderPushButton, &ElaPushButton::clicked, this, &setting::onCmdLoaderButtonClicked);
     connect(micaButtonGroup, static_cast<void(QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, &setting::onMicaButtonClicked);
     connect(themeComboBox, QOverload<int>::of(&ElaComboBox::currentIndexChanged), this, &setting::onThemeComboBoxChanged);
+    connect(messageBarMsecDoubleSpinBox, QOverload<double>::of(&ElaDoubleSpinBox::valueChanged), this, &setting::onDoubleSpinBoxValueChanged);
 }
 
 void setting::onSpinBoxValueChanged(int value) {
-    // qDebug() << value;
     SettingsManager::instance()->setValue("port", value);
 }
 
@@ -337,6 +363,10 @@ void setting::onThemeComboBoxChanged(int index) {
 
 void setting::onComboBoxTextChanged(QString text) {
     SettingsManager::instance() -> setValue("run_mode", text);
+}
+
+void setting::onDoubleSpinBoxValueChanged(double value) {
+    SettingsManager::instance() -> setValue("message_bar_msec", (int) value*1000);
 }
 
 
