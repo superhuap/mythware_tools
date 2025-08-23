@@ -5,9 +5,7 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_message.h" resolved
 
 #include "message.h"
-#include <QTextStream>
-#include <QFile>
-#include <QDebug>
+#include <QDomElement>
 #include <QtConcurrent/QtConcurrent>
 #include "ElaContentDialog.h"
 #include "ElaMessageBar.h"
@@ -15,7 +13,8 @@
 #include "../../model/TreeModel.h"
 #include "../../item/TreeItem.h"
 #include "../../util/SettingManager.h"
-#include "../../util/SendingManager.h"
+#include "../../util/SendingHelper.h"
+#include "../../util/XmlLoaderHelper.h"
 
 message::message(QWidget *parent) :
     QWidget(parent), ui(new Ui::message) {
@@ -99,13 +98,13 @@ void message::send(QString msg){
     ui->plainTextEdit_msg->setEnabled(false);
     ui->comboBox->setEnabled(false);
 
-    QtConcurrent::run([=]() {
+    QtConcurrent::run([=, this]() {
         int total = checkedItems.length() * spinCount;
         int sent = 0;
 
         for (int i = 1; i <= spinCount; ++i) {
             for (int j = 0; j < checkedItems.length(); ++j) {
-                SendingManager::instance()->send("msg", msg, checkedItems.at(j)->getTitle());
+                SendingHelper::instance()->send("msg", msg, checkedItems.at(j)->getIp());
                 sent++;
 
                 int progress = (sent * 100) / total;
@@ -125,23 +124,38 @@ void message::send(QString msg){
 }
 
 void message::loadMsgData() {
-    ui->comboBox->addItem("");
     ui->comboBox->clear();
-    QFile file(SettingsManager::instance()->getValue("msg_loader_path").toString());
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    ui->comboBox->addItem("");  // 可选空项
+
+    // 调用通用解析函数
+    ParsedXmlResult result = loadAndParseXML("msg_loader_path", "msg_list");
+    if (!result.isValid) {
         return;
     }
-    QTextStream in(&file);
+
+    QDomElement root = result.doc.documentElement();
     int messageCount = 0;
-    ui->comboBox->addItem("");
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        if (line.isEmpty()) {
-            continue;
+
+    for (QDomElement elem = root.firstChildElement("message");
+         !elem.isNull();
+         elem = elem.nextSiblingElement("message")) {
+
+        QString text = elem.text().trimmed();
+        if (!text.isEmpty()) {
+            ui->comboBox->addItem(text);
+            messageCount++;
         }
-        messageCount++;
-        ui->comboBox->addItem(line);
     }
-    file.close();
-    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("加载了%1条消息").arg(messageCount), SettingsManager::instance()->getValue("message_bar_msec").toInt());
+
+    if (messageCount > 0) {
+        ElaMessageBar::success(ElaMessageBarType::TopRight,
+                               QStringLiteral("成功"),
+                               QStringLiteral("加载了 %1 条消息").arg(messageCount),
+                               SettingsManager::instance()->getValue("message_bar_msec").toInt());
+    } else {
+        ElaMessageBar::warning(ElaMessageBarType::TopRight,
+                               QStringLiteral("提示"),
+                               QStringLiteral("XML中未找到有效消息"),
+                               SettingsManager::instance()->getValue("message_bar_msec").toInt());
+    }
 }

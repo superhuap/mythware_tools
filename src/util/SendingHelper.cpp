@@ -1,5 +1,5 @@
-﻿// SendingManager.cpp
-#include "SendingManager.h"
+﻿// SendingHelper.cpp
+#include "SendingHelper.h"
 #include <array>
 #include <random>
 #include <QDebug>
@@ -14,9 +14,9 @@ QByteArray createBase0Packet() {
     return header + padding;
 }
 
-SendingManager* SendingManager::m_instance = nullptr;
+SendingHelper* SendingHelper::m_instance = nullptr;
 
-const std::array<QByteArray, 3> SendingManager::m_base = {
+const std::array<QByteArray, 3> SendingHelper::m_base = {
     createBase0Packet(),
 
     QByteArrayLiteral(
@@ -44,19 +44,19 @@ const std::array<QByteArray, 3> SendingManager::m_base = {
     ) + QByteArray(744 - 180, '\x00')
 };
 
-SendingManager* SendingManager::instance()
+SendingHelper* SendingHelper::instance()
 {
     if (!m_instance)
-        m_instance = new SendingManager();
+        m_instance = new SendingHelper();
     return m_instance;
 }
 
-SendingManager::SendingManager(QObject* parent)
+SendingHelper::SendingHelper(QObject* parent)
     : QObject(parent)
 {
 }
 
-QByteArray SendingManager::formatToBytes(const QString& text) const
+QByteArray SendingHelper::formatToBytes(const QString& text) const
 {
     QByteArray out;
     for (QChar ch : text) {
@@ -68,7 +68,7 @@ QByteArray SendingManager::formatToBytes(const QString& text) const
 }
 
 // 构建消息包
-QByteArray SendingManager::packMessage(const QString& type, const QString& content) const
+QByteArray SendingHelper::packMessage(const QString& type, const QString& content) const
 {
     QByteArray result;
     int index = 0;
@@ -108,8 +108,9 @@ QByteArray SendingManager::packMessage(const QString& type, const QString& conte
     return result;
 }
 
-void SendingManager::send(const QString& type, const QString& content, const QString& ip)
+void SendingHelper::send(const QString& type, const QString& content, const QString& ip)
 {
+    qDebug() << "Sending message:" << type << content << ip;
     QByteArray datagram = packMessage(type, content);
     if (datagram.isEmpty()) {
         qWarning() << "Failed to create datagram for type:" << type;

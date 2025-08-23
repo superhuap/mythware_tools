@@ -1,4 +1,4 @@
-﻿// SendingManager.h
+﻿// SendingHelper.h
 #pragma once
 
 #include <QObject>
@@ -8,19 +8,19 @@
 
 class SettingsManager; // 假设已存在
 
-class SendingManager : public QObject
+class SendingHelper : public QObject
 {
     Q_OBJECT
 
 public:
-    static SendingManager* instance();
+    static SendingHelper* instance();
 
     void send(const QString& type, const QString& content, const QString& ip);
 
 private:
-    explicit SendingManager(QObject* parent = nullptr);
+    explicit SendingHelper(QObject* parent = nullptr);
 
-    static SendingManager* m_instance;
+    static SendingHelper* m_instance;
 
     // 将 QString 转换为 Little-Endian UTF-16 字节数组
     QByteArray formatToBytes(const QString& text) const;

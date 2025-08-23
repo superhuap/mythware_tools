@@ -309,7 +309,7 @@ void setting::onSpinBoxValueChanged(int value) {
 }
 
 void setting::onIpLoaderButtonClicked() {
-    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.txt)"));
+    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.xml)"));
     if (file_name == "") {
         return;
     }
@@ -318,7 +318,7 @@ void setting::onIpLoaderButtonClicked() {
 }
 
 void setting::onMsgLoaderButtonClicked() {
-    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.txt)"));
+    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.xml)"));
     if (file_name == "") {
         return;
     }
@@ -327,7 +327,7 @@ void setting::onMsgLoaderButtonClicked() {
 }
 
 void setting::onCmdLoaderButtonClicked() {
-    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.txt)"));
+    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.xml)"));
     if (file_name == "") {
         return;
     }

@@ -1,8 +1,8 @@
 ﻿// TreeItem.cpp
 #include "TreeItem.h"
 
-TreeItem::TreeItem(const QString& title, TreeItem* parent)
-    : m_title(title), m_parent(parent)
+TreeItem::TreeItem(const QString& title, const QString& ip, TreeItem* parent)
+    : m_title(title), m_ip(ip), m_parent(parent)
 {
     if (parent) {
         parent->appendChild(this);
@@ -16,6 +16,8 @@ TreeItem::~TreeItem()
 
 QString TreeItem::getTitle() const { return m_title; }
 void TreeItem::setTitle(const QString& title) { m_title = title; }
+
+QString TreeItem::getIp() const {return m_ip; }
 
 bool TreeItem::isChecked() const { return m_checked; }
 void TreeItem::setChecked(bool checked)

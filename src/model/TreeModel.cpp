@@ -2,9 +2,9 @@
 #include "TreeModel.h"
 #include "../item/TreeItem.h"
 #include "../util/SettingManager.h"
-#include <QFile>
 #include <QDebug>
-#include <QHostAddress>
+#include "QDomDocument"
+#include "../util/XmlLoaderHelper.h"
 #include <QTextStream>
 #include <ElaMessageBar.h>
 #include <qregularexpression.h>
@@ -19,7 +19,7 @@ TreeModel* TreeModel::instance(QObject* parent)
 TreeModel::TreeModel(QObject* parent)
     : QAbstractItemModel(parent)
 {
-    m_root = new TreeItem("Root");
+    m_root = new TreeItem("Root", "");
     setupModelData();
 }
 
@@ -33,35 +33,59 @@ void TreeModel::setupModelData()
     int invalidCount = 0;
     int validCount = 0;
 
-    QFile file(SettingsManager::instance()->getValue("ip_loader_path").toString());
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        ElaMessageBar::error(ElaMessageBarType::TopRight, QStringLiteral("错误"), QStringLiteral("没有选择ip文件"), SettingsManager::instance()->getValue("message_bar_msec").toInt());
-        SettingsManager::instance()->setValue("ip_loader_path", "");
-        return ;
+    // 调用通用解析函数
+    ParsedXmlResult result = loadAndParseXML("ip_loader_path", "ip_list");
+    if (!result.isValid) {
+        SettingsManager::instance()->setValue("ip_loader_path", ""); // 清除无效路径
+        return;
     }
-    QTextStream in(&file);
 
+    QDomElement root = result.doc.documentElement();
+
+    // IP 地址正则
     static QRegularExpression re(
-        R"(^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$)"
+            R"(^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$)"
     );
 
-    while (!in.atEnd()) {
-        QString line = in.readLine();
-        if (line.isEmpty()) {
-            continue;
-        }
-        if (!re.match(line).hasMatch()) {
+    for (QDomElement ipElem = root.firstChildElement("ip");
+         !ipElem.isNull();
+         ipElem = ipElem.nextSiblingElement("ip")) {
+
+        QString name = ipElem.firstChildElement("name").text().trimmed();
+        QString address = ipElem.firstChildElement("address").text().trimmed();
+
+        if (address.isEmpty() || !re.match(address).hasMatch()) {
             invalidCount++;
             continue;
         }
-        new TreeItem(line, m_root);
+
+        if (name.isEmpty()) {
+            name = QStringLiteral("未知");
+        }
+
+        QString displayText = QStringLiteral("%1 (%2)").arg(name).arg(address);
+        new TreeItem(displayText, address, m_root);
         validCount++;
     }
-    file.close();
+
     if (invalidCount > 0) {
-        ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("警告"), QStringLiteral("有%1个IP地址格式不合法。").arg(invalidCount), SettingsManager::instance()->getValue("message_bar_msec").toInt());
+        ElaMessageBar::warning(ElaMessageBarType::TopRight,
+                               QStringLiteral("警告"),
+                               QStringLiteral("有 %1 个IP条目格式不合法，已跳过。").arg(invalidCount),
+                               SettingsManager::instance()->getValue("message_bar_msec").toInt());
     }
-    ElaMessageBar::success(ElaMessageBarType::TopRight, QStringLiteral("成功"), QStringLiteral("加载%1个IP").arg(validCount), SettingsManager::instance()->getValue("message_bar_msec").toInt());
+
+    if (validCount > 0) {
+        ElaMessageBar::success(ElaMessageBarType::TopRight,
+                               QStringLiteral("成功"),
+                               QStringLiteral("加载 %1 个IP地址").arg(validCount),
+                               SettingsManager::instance()->getValue("message_bar_msec").toInt());
+    } else {
+        ElaMessageBar::error(ElaMessageBarType::TopRight,
+                             QStringLiteral("失败"),
+                             QStringLiteral("未加载到任何有效IP地址"),
+                             SettingsManager::instance()->getValue("message_bar_msec").toInt());
+    }
 }
 
 QVariant TreeModel::data(const QModelIndex& index, int role) const
@@ -150,7 +174,7 @@ void TreeModel::reloadData() {
     if (m_root) {
         delete m_root;
     }
-    m_root = new TreeItem("Root");
+    m_root = new TreeItem("Root", "");
     setupModelData();
     endResetModel();
 }

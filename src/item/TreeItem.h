@@ -7,12 +7,14 @@
 class TreeItem
 {
 public:
-    explicit TreeItem(const QString& title, TreeItem* parent = nullptr);
+    explicit TreeItem(const QString& title, const QString& ip, TreeItem* parent = nullptr);
 
     ~TreeItem();
 
     QString getTitle() const;
     void setTitle(const QString& title);
+
+    QString getIp() const;
 
     bool isChecked() const;
     void setChecked(bool checked);
@@ -28,6 +30,7 @@ public:
 
 private:
     QString m_title;
+    QString m_ip;
     bool m_checked = false;
     TreeItem* m_parent = nullptr;
     QList<TreeItem*> m_children;
