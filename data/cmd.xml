@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cmd_list>
+    <cmd>
+        <name>关机</name>
+        <command>shutdown -s /t 0</command>
+    </cmd>
+    <cmd>
+        <name>重启</name>
+        <command>shutdown -r /t 0</command>
+    </cmd>
+    <cmd>
+        <name>计算器</name>
+        <command>calc</command>
+    </cmd>
+</cmd_list>

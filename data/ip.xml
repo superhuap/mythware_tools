@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ip_list>
+    <ip>
+        <name>张三</name>
+        <address>192.168.101.26</address>
+    </ip>
+    <ip>
+        <name>李四</name>
+        <address>192.168.101.27</address>
+    </ip>
+    <ip>
+        <name>王五</name>
+        <address>192.168.101.28</address>
+    </ip>
+</ip_list>
