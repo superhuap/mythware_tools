@@ -7,6 +7,8 @@
 
 #include <QWidget>
 
+class ElaContentDialog;
+class ElaText;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class command; }
@@ -19,10 +21,20 @@ public:
     explicit command(QWidget *parent = nullptr);
     ~command() override;
 
+private slots:
+    void onSelectAllButtonClicked();
+    void onReLoadDataButtonClicked();
+    void onSendButtonClicked();
+
 private:
     Ui::command *ui;
+    ElaContentDialog* dialog;
+    ElaText* label;
     void loadData();
     void configWidgets();
+    void loadCmdData();
+    void setupConnections();
+    void send(QString cmd);
 };
 
 

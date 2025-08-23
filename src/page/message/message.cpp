@@ -47,6 +47,43 @@ void message::loadData() {
     loadMsgData();
 }
 
+void message::loadMsgData() {
+    ui->comboBox->clear();
+    ui->comboBox->addItem("");  // 可选空项
+
+    // 调用通用解析函数
+    ParsedXmlResult result = loadAndParseXML("msg_loader_path", "msg_list");
+    if (!result.isValid) {
+        return;
+    }
+
+    QDomElement root = result.doc.documentElement();
+    int messageCount = 0;
+
+    for (QDomElement elem = root.firstChildElement("message");
+         !elem.isNull();
+         elem = elem.nextSiblingElement("message")) {
+
+        QString text = elem.text().trimmed();
+        if (!text.isEmpty()) {
+            ui->comboBox->addItem(text);
+            messageCount++;
+        }
+    }
+
+    if (messageCount > 0) {
+        ElaMessageBar::success(ElaMessageBarType::TopRight,
+                               QStringLiteral("成功"),
+                               QStringLiteral("加载了 %1 条消息").arg(messageCount),
+                               SettingsManager::instance()->getValue("message_bar_msec").toInt());
+    } else {
+        ElaMessageBar::warning(ElaMessageBarType::TopRight,
+                               QStringLiteral("提示"),
+                               QStringLiteral("XML中未找到有效消息"),
+                               SettingsManager::instance()->getValue("message_bar_msec").toInt());
+    }
+}
+
 void message::setupConnections() {
     connect(ui->pushButton_load, &ElaPushButton::clicked, this, &message::onReLoadDataButtonClicked);
     connect(ui->pushButton_selectAll, &ElaPushButton::clicked, this, &message::onSelectAllButtonClicked);
@@ -68,7 +105,6 @@ void message::onReLoadDataButtonClicked() {
     TreeModel::instance()->reloadData();
     loadMsgData();
 }
-
 
 void message::onSelectAllButtonClicked() {
     TreeModel::instance()->selectAll();
@@ -123,39 +159,4 @@ void message::send(QString msg){
     });
 }
 
-void message::loadMsgData() {
-    ui->comboBox->clear();
-    ui->comboBox->addItem("");  // 可选空项
 
-    // 调用通用解析函数
-    ParsedXmlResult result = loadAndParseXML("msg_loader_path", "msg_list");
-    if (!result.isValid) {
-        return;
-    }
-
-    QDomElement root = result.doc.documentElement();
-    int messageCount = 0;
-
-    for (QDomElement elem = root.firstChildElement("message");
-         !elem.isNull();
-         elem = elem.nextSiblingElement("message")) {
-
-        QString text = elem.text().trimmed();
-        if (!text.isEmpty()) {
-            ui->comboBox->addItem(text);
-            messageCount++;
-        }
-    }
-
-    if (messageCount > 0) {
-        ElaMessageBar::success(ElaMessageBarType::TopRight,
-                               QStringLiteral("成功"),
-                               QStringLiteral("加载了 %1 条消息").arg(messageCount),
-                               SettingsManager::instance()->getValue("message_bar_msec").toInt());
-    } else {
-        ElaMessageBar::warning(ElaMessageBarType::TopRight,
-                               QStringLiteral("提示"),
-                               QStringLiteral("XML中未找到有效消息"),
-                               SettingsManager::instance()->getValue("message_bar_msec").toInt());
-    }
-}
