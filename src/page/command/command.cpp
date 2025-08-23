@@ -11,11 +11,16 @@
 command::command(QWidget *parent) :
     QWidget(parent), ui(new Ui::command) {
     ui->setupUi(this);
+    configWidgets();
     loadData();
 }
 
 command::~command() {
     delete ui;
+}
+
+void command::configWidgets() {
+    ui->label->setTextPixelSize(15);
 }
 
 void command::loadData() {

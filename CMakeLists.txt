@@ -67,6 +67,7 @@ find_package(Qt5 REQUIRED COMPONENTS
         Gui
         Widgets
         Network
+        Xml
 )
 
 file(GLOB_RECURSE SRC CONFIGURE_DEPENDS
@@ -95,6 +96,7 @@ target_link_libraries(${PROJECT_NAME}
         Qt5::Gui
         Qt5::Widgets
         Qt5::Network
+        Qt5::Xml
         ElaWidgetTools
 )
 

@@ -5,8 +5,6 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_message.h" resolved
 
 #include "message.h"
-
-
 #include <QTextStream>
 #include <QFile>
 #include <QDebug>

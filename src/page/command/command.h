@@ -22,6 +22,7 @@ public:
 private:
     Ui::command *ui;
     void loadData();
+    void configWidgets();
 };
 
 
