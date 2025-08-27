@@ -1,5 +1,6 @@
 ﻿// SendingHelper.cpp
 #include "SendingHelper.h"
+#include <ElaMessageBar.h>
 #include <QtNetwork/QUdpSocket>
 #include <QRandomGenerator>
 #include "SettingManager.h"

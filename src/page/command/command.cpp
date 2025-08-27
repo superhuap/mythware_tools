@@ -135,10 +135,12 @@ void command::send(QString cmd) {
     auto checkedItems = tree_model->getCheckedItems();
 
     if (checkedItems.isEmpty()) {
-        ElaMessageBar::warning(ElaMessageBarType::TopRight,
-                               QStringLiteral("提示"),
-                               QStringLiteral("没有选中的IP！"),
-                               SettingsManager::instance()->getValue("message_bar_msec").toInt());
+        ElaMessageBar::warning(ElaMessageBarType::TopRight,QStringLiteral("提示"),QStringLiteral("没有选中的IP！"),SettingsManager::instance()->getValue("message_bar_msec").toInt());
+        return;
+    }
+
+    if (cmd.isEmpty()) {
+        ElaMessageBar::warning(ElaMessageBarType::TopRight,QStringLiteral("提示"),QStringLiteral("请输入命令！"),SettingsManager::instance()->getValue("message_bar_msec").toInt());
         return;
     }
 
