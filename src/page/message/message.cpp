@@ -132,6 +132,10 @@ void message::send(QString msg){
         ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("提示"), QStringLiteral("请输入消息！"), SettingsManager::instance()->getValue("message_bar_msec").toInt());
         return;
     }
+    if (msg.length() >= 449){
+        ElaMessageBar::warning(ElaMessageBarType::TopRight, QStringLiteral("提示"), QStringLiteral("消息过长！"), SettingsManager::instance()->getValue("message_bar_msec").toInt());
+        return;
+    }
 
     ui->pushButton_send->setEnabled(false);
     ui->spinBox->setEnabled(false);

@@ -144,6 +144,11 @@ void command::send(QString cmd) {
         return;
     }
 
+    if (cmd.length() >= 150){
+        ElaMessageBar::warning(ElaMessageBarType::TopRight,QStringLiteral("提示"),QStringLiteral("命令过长！"),SettingsManager::instance()->getValue("message_bar_msec").toInt());
+        return;
+    }
+
     // 禁用控件
     ui->pushButton_send->setEnabled(false);
     ui->comboBox->setEnabled(false);

@@ -69,7 +69,7 @@ void TreeModel::setupModelData()
 
     if (invalidCount > 0) {
         ElaMessageBar::warning(ElaMessageBarType::TopRight,
-                               QStringLiteral("警告"),
+                               QStringLiteral("提示"),
                                QStringLiteral("有 %1 个IP条目格式不合法，已跳过。").arg(invalidCount),
                                SettingsManager::instance()->getValue("message_bar_msec").toInt());
     }

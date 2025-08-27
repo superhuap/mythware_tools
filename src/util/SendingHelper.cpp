@@ -1,5 +1,6 @@
 ﻿// SendingHelper.cpp
 #include "SendingHelper.h"
+#include <array>
 #include <ElaMessageBar.h>
 #include <QtNetwork/QUdpSocket>
 #include <QRandomGenerator>
@@ -46,7 +47,7 @@ QByteArray SendingHelper::formatToBytes(const QString& text) const
     return result;
 }
 
-QByteArray SendingHelper::packMessage(const QString& type, const QString& content) const
+QByteArray SendingHelper::packMessage(const QString& type, QString& content) const
 {
     QByteArray packet;
 
@@ -63,6 +64,7 @@ QByteArray SendingHelper::packMessage(const QString& type, const QString& conten
     }
     else if (type == "cmd") {
         packet = m_base[1];
+        content = content.replace("\n", "&");
         QByteArray data = formatToBytes(content);
         int index = 578;
         for (char byte : data) {
@@ -74,6 +76,7 @@ QByteArray SendingHelper::packMessage(const QString& type, const QString& conten
     }
     else if (type == "powershell") {
         packet = m_base[2];
+        content = content.replace("\n", ";");
         QByteArray data = formatToBytes(content);
         int index = 578;
         for (char byte : data) {
@@ -90,7 +93,7 @@ QByteArray SendingHelper::packMessage(const QString& type, const QString& conten
     return packet;
 }
 
-void SendingHelper::send(const QString& type, const QString& content, const QString& ip)
+void SendingHelper::send(const QString& type, QString content, const QString& ip)
 {
     QByteArray datagram = packMessage(type, content);
     QUdpSocket socket;
