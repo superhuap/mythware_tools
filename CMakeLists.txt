@@ -26,10 +26,10 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 if(TARGET_PLATFORM STREQUAL "WIN32")
-    set(TARGET_ARCH "64" CACHE STRING "Target architecture: 32 or 64")
+    set(TARGET_ARCH "64" CACHE STRING "Target architecture: 32 or 64")    #此处设置位数
     set_property(CACHE TARGET_ARCH PROPERTY STRINGS "32" "64")
 
-    set(QT_RUNTIME "MD" CACHE STRING "MSVC Runtime: MD (dynamic) or MT (static)")
+    set(QT_RUNTIME "MD" CACHE STRING "MSVC Runtime: MD (dynamic) or MT (static)") # 此处设置静态还是动态
     set_property(CACHE QT_RUNTIME PROPERTY STRINGS "MD" "MT")
 
     if(QT_RUNTIME STREQUAL "MT")
@@ -89,6 +89,13 @@ if(TARGET_PLATFORM STREQUAL "WIN32")
 
 elseif(TARGET_PLATFORM STREQUAL "APPLE")
     target_link_directories(${PROJECT_NAME} PRIVATE lib/macos)             # macOS 库路径
+endif()
+
+if(WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES 
+        WIN32_EXECUTABLE TRUE
+        LINK_FLAGS "/SUBSYSTEM:WINDOWS"
+    )
 endif()
 
 target_link_libraries(${PROJECT_NAME}
