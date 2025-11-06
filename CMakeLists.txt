@@ -91,6 +91,13 @@ elseif(TARGET_PLATFORM STREQUAL "APPLE")
     target_link_directories(${PROJECT_NAME} PRIVATE lib/macos)             # macOS 库路径
 endif()
 
+if(WIN32)
+    set_target_properties(${PROJECT_NAME} PROPERTIES 
+        WIN32_EXECUTABLE TRUE
+        LINK_FLAGS "/SUBSYSTEM:WINDOWS"
+    )
+endif()
+
 target_link_libraries(${PROJECT_NAME}
         Qt5::Core
         Qt5::Gui
