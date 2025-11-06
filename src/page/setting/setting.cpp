@@ -1,4 +1,4 @@
-﻿//
+//
 // Created by superhuap on 2025/7/27.
 //
 
@@ -18,6 +18,7 @@
 #include <ElaApplication.h>
 #include <ElaSpinBox.h>
 #include "../../util/SettingManager.h"
+#include "DropableElaText.h"
 
 setting::setting(QWidget *parent) :
     ElaScrollPage(parent), ui(new Ui::setting) {
@@ -78,21 +79,21 @@ void setting::createWidgets() {
     ipLoaderSwitchArea = new ElaScrollPageArea(this);
     ipLoaderSwitchLayout = new QHBoxLayout(ipLoaderSwitchArea);
     ipLoaderSwitchText = new ElaText(QStringLiteral("ip列表路径"), ipLoaderSwitchArea);
-    ipLoaderSwitchPath = new ElaText("", ipLoaderSwitchArea);
+    ipLoaderSwitchPath = new DropableElaText(ipLoaderSwitchArea);
     ipLoaderPushButton = new ElaPushButton(ipLoaderSwitchArea);
 
     // 快捷消息加载
     msgLoaderSwitchArea = new ElaScrollPageArea(this);
     msgLoaderSwitchLayout = new QHBoxLayout(msgLoaderSwitchArea);
     msgLoaderSwitchText = new ElaText(QStringLiteral("快捷消息路径"), msgLoaderSwitchArea);
-    msgLoaderSwitchPath = new ElaText("", msgLoaderSwitchArea);
+    msgLoaderSwitchPath = new DropableElaText(msgLoaderSwitchArea);
     msgLoaderPushButton = new ElaPushButton(msgLoaderSwitchArea);
 
     // 快捷命令加载
     cmdLoaderSwitchArea = new ElaScrollPageArea(this);
     cmdLoaderSwitchLayout = new QHBoxLayout(cmdLoaderSwitchArea);
     cmdLoaderSwitchText = new ElaText(QStringLiteral("快捷命令路径"), cmdLoaderSwitchArea);
-    cmdLoaderSwitchPath = new ElaText("", cmdLoaderSwitchArea);
+    cmdLoaderSwitchPath = new DropableElaText(cmdLoaderSwitchArea);
     cmdLoaderPushButton = new ElaPushButton(cmdLoaderSwitchArea);
 
     // Mica 开关
@@ -141,6 +142,8 @@ void setting::configWidgets() {
     ipLoaderSwitchText->setTextPixelSize(15);
     ipLoaderSwitchPath->setTextPixelSize(10);
     ipLoaderSwitchPath->setWordWrap(false);
+    ipLoaderSwitchPath->setMinimumWidth(100);
+    ipLoaderSwitchPath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); // 扩展填充
     ipLoaderPushButton->setText(QStringLiteral("选择文件"));
 
     // msg loader
@@ -148,6 +151,8 @@ void setting::configWidgets() {
     msgLoaderSwitchText->setTextPixelSize(15);
     msgLoaderSwitchPath->setTextPixelSize(10);
     msgLoaderSwitchPath->setWordWrap(false);
+    msgLoaderSwitchPath->setMinimumWidth(100);
+    msgLoaderSwitchPath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); // 扩展填充
     msgLoaderPushButton->setText(QStringLiteral("选择文件"));
 
     // cmd loader
@@ -155,6 +160,8 @@ void setting::configWidgets() {
     cmdLoaderSwitchText->setTextPixelSize(15);
     cmdLoaderSwitchPath->setTextPixelSize(10);
     cmdLoaderSwitchPath->setWordWrap(false);
+    cmdLoaderSwitchPath->setMinimumWidth(100);
+    cmdLoaderSwitchPath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); // 扩展填充
     cmdLoaderPushButton->setText(QStringLiteral("选择文件"));
 
     // mica
@@ -237,23 +244,17 @@ void setting::setupLayout() {
 
     // ip loader
     ipLoaderSwitchLayout->addWidget(ipLoaderSwitchText);
-    ipLoaderSwitchLayout->addStretch();
-    ipLoaderSwitchLayout->addWidget(ipLoaderSwitchPath);
-    ipLoaderSwitchLayout->addStretch();
+    ipLoaderSwitchLayout->addWidget(ipLoaderSwitchPath, 1); // 添加拉伸因子
     ipLoaderSwitchLayout->addWidget(ipLoaderPushButton);
 
     // msg loader
     msgLoaderSwitchLayout->addWidget(msgLoaderSwitchText);
-    msgLoaderSwitchLayout->addStretch();
-    msgLoaderSwitchLayout->addWidget(msgLoaderSwitchPath);
-    msgLoaderSwitchLayout->addStretch();
+    msgLoaderSwitchLayout->addWidget(msgLoaderSwitchPath, 1); // 添加拉伸因子
     msgLoaderSwitchLayout->addWidget(msgLoaderPushButton);
 
     // cmd loader
     cmdLoaderSwitchLayout->addWidget(cmdLoaderSwitchText);
-    cmdLoaderSwitchLayout->addStretch();
-    cmdLoaderSwitchLayout->addWidget(cmdLoaderSwitchPath);
-    cmdLoaderSwitchLayout->addStretch();
+    cmdLoaderSwitchLayout->addWidget(cmdLoaderSwitchPath, 1); // 添加拉伸因子
     cmdLoaderSwitchLayout->addWidget(cmdLoaderPushButton);
 
     // mica
@@ -299,6 +300,11 @@ void setting::setupConnections() {
     connect(micaButtonGroup, static_cast<void(QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked), this, &setting::onMicaButtonClicked);
     connect(themeComboBox, QOverload<int>::of(&ElaComboBox::currentIndexChanged), this, &setting::onThemeComboBoxChanged);
     connect(messageBarMsecSpinBox, QOverload<int>::of(&ElaSpinBox::valueChanged), this, &setting::onSpinBoxValueChanged);
+    
+    // 连接文件拖拽信号
+    connect(ipLoaderSwitchPath, &DropableElaText::fileDropped, this, &setting::onIpFileDropped);
+    connect(msgLoaderSwitchPath, &DropableElaText::fileDropped, this, &setting::onMsgFileDropped);
+    connect(cmdLoaderSwitchPath, &DropableElaText::fileDropped, this, &setting::onCmdFileDropped);
 }
 
 void setting::onPortSpinBoxValueChanged(int value) {
@@ -364,6 +370,21 @@ void setting::onComboBoxTextChanged(QString text) {
 
 void setting::onSpinBoxValueChanged(double value) {
     SettingsManager::instance() -> setValue("message_bar_msec", value);
+}
+
+void setting::onIpFileDropped(const QString& filePath) {
+    ipLoaderSwitchPath->setText(filePath);
+    SettingsManager::instance()->setValue("ip_loader_path", filePath);
+}
+
+void setting::onMsgFileDropped(const QString& filePath) {
+    msgLoaderSwitchPath->setText(filePath);
+    SettingsManager::instance()->setValue("msg_loader_path", filePath);
+}
+
+void setting::onCmdFileDropped(const QString& filePath) {
+    cmdLoaderSwitchPath->setText(filePath);
+    SettingsManager::instance()->setValue("cmd_loader_path", filePath);
 }
 
 

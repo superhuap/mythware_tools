@@ -1,4 +1,4 @@
-﻿//
+//
 // Created by superhuap on 2025/7/27.
 //
 
@@ -6,6 +6,7 @@
 #define SETTING_H
 
 #include <ElaScrollPage.h>
+#include "DropableElaText.h"
 
 class QAbstractButton;
 class QButtonGroup;
@@ -38,6 +39,11 @@ private slots:
     void onMicaButtonClicked(QAbstractButton *button);
     void onThemeComboBoxChanged(int index);
     void onSpinBoxValueChanged(double value);
+    
+    // 文件拖拽槽函数
+    void onIpFileDropped(const QString& filePath);
+    void onMsgFileDropped(const QString& filePath);
+    void onCmdFileDropped(const QString& filePath);
 
 private:
     void initSettings();
@@ -68,21 +74,21 @@ private:
     ElaScrollPageArea *ipLoaderSwitchArea;
     QHBoxLayout *ipLoaderSwitchLayout;
     ElaText *ipLoaderSwitchText;
-    ElaText *ipLoaderSwitchPath;
+    DropableElaText *ipLoaderSwitchPath;
     ElaPushButton *ipLoaderPushButton;
 
     // 快捷消息加载
     ElaScrollPageArea *msgLoaderSwitchArea;
     QHBoxLayout *msgLoaderSwitchLayout;
     ElaText *msgLoaderSwitchText;
-    ElaText *msgLoaderSwitchPath;
+    DropableElaText *msgLoaderSwitchPath;
     ElaPushButton *msgLoaderPushButton;
 
     // 快捷命令加载
     ElaScrollPageArea *cmdLoaderSwitchArea;
     QHBoxLayout *cmdLoaderSwitchLayout;
     ElaText *cmdLoaderSwitchText;
-    ElaText *cmdLoaderSwitchPath;
+    DropableElaText *cmdLoaderSwitchPath;
     ElaPushButton *cmdLoaderPushButton;
 
     // Mica
