@@ -66,40 +66,40 @@ void setting::createWidgets() {
     // 模式选择
     portSwitchArea = new ElaScrollPageArea(this);
     portSwitchLayout = new QHBoxLayout(portSwitchArea);
-    portSwitchText = new ElaText(QStringLiteral("接收端口"), portSwitchArea);
+    portSwitchText = new ElaText(QString("接收端口"), portSwitchArea);
     portSpinBox = new ElaSpinBox(portSwitchArea);
 
     // 模式选择
     modeSwitchArea = new ElaScrollPageArea(this);
     modeSwitchLayout = new QHBoxLayout(modeSwitchArea);
-    modeSwitchText = new ElaText(QStringLiteral("命令运行方式"), modeSwitchArea);
+    modeSwitchText = new ElaText(QString("命令运行方式"), modeSwitchArea);
     modeComboBox = new ElaComboBox(modeSwitchArea);
 
     // IP 加载
     ipLoaderSwitchArea = new ElaScrollPageArea(this);
     ipLoaderSwitchLayout = new QHBoxLayout(ipLoaderSwitchArea);
-    ipLoaderSwitchText = new ElaText(QStringLiteral("ip列表路径"), ipLoaderSwitchArea);
+    ipLoaderSwitchText = new ElaText(QString("ip列表路径"), ipLoaderSwitchArea);
     ipLoaderSwitchPath = new DropableElaText(ipLoaderSwitchArea);
     ipLoaderPushButton = new ElaPushButton(ipLoaderSwitchArea);
 
     // 快捷消息加载
     msgLoaderSwitchArea = new ElaScrollPageArea(this);
     msgLoaderSwitchLayout = new QHBoxLayout(msgLoaderSwitchArea);
-    msgLoaderSwitchText = new ElaText(QStringLiteral("快捷消息路径"), msgLoaderSwitchArea);
+    msgLoaderSwitchText = new ElaText(QString("快捷消息路径"), msgLoaderSwitchArea);
     msgLoaderSwitchPath = new DropableElaText(msgLoaderSwitchArea);
     msgLoaderPushButton = new ElaPushButton(msgLoaderSwitchArea);
 
     // 快捷命令加载
     cmdLoaderSwitchArea = new ElaScrollPageArea(this);
     cmdLoaderSwitchLayout = new QHBoxLayout(cmdLoaderSwitchArea);
-    cmdLoaderSwitchText = new ElaText(QStringLiteral("快捷命令路径"), cmdLoaderSwitchArea);
+    cmdLoaderSwitchText = new ElaText(QString("快捷命令路径"), cmdLoaderSwitchArea);
     cmdLoaderSwitchPath = new DropableElaText(cmdLoaderSwitchArea);
     cmdLoaderPushButton = new ElaPushButton(cmdLoaderSwitchArea);
 
     // Mica 开关
     micaSwitchArea = new ElaScrollPageArea(this);
     micaSwitchLayout = new QHBoxLayout(micaSwitchArea);
-    micaSwitchText = new ElaText(QStringLiteral("云母效果"), micaSwitchArea);
+    micaSwitchText = new ElaText(QString("云母效果"), micaSwitchArea);
     micaButtonGroup = new QButtonGroup(this);
     normalButton = new ElaRadioButton("Normal", this);
     elamicaButton = new ElaRadioButton("ElaMica", this);
@@ -113,13 +113,13 @@ void setting::createWidgets() {
     // 主题切换
     themeSwitchArea = new ElaScrollPageArea(this);
     themeSwitchLayout = new QHBoxLayout(themeSwitchArea);
-    themeSwitchText = new ElaText(QStringLiteral("主题切换"), themeSwitchArea);
+    themeSwitchText = new ElaText(QString("主题切换"), themeSwitchArea);
     themeComboBox = new ElaComboBox(themeSwitchArea);
 
     // 消息提示显示时间
     messageBarMsecSwitchArea = new ElaScrollPageArea(this);
     messageBarMsecSwitchLayout = new QHBoxLayout(messageBarMsecSwitchArea);
-    messageBarMsecSwitchText = new ElaText(QStringLiteral("消息提示显示时间"), messageBarMsecSwitchArea);
+    messageBarMsecSwitchText = new ElaText(QString("消息提示显示时间"), messageBarMsecSwitchArea);
     messageBarMsecSpinBox = new ElaSpinBox(messageBarMsecSwitchArea);
 }
 
@@ -144,7 +144,7 @@ void setting::configWidgets() {
     ipLoaderSwitchPath->setWordWrap(false);
     ipLoaderSwitchPath->setMinimumWidth(100);
     ipLoaderSwitchPath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); // 扩展填充
-    ipLoaderPushButton->setText(QStringLiteral("选择文件"));
+    ipLoaderPushButton->setText(QString("选择文件"));
 
     // msg loader
     msgLoaderSwitchText->setWordWrap(false);
@@ -153,7 +153,7 @@ void setting::configWidgets() {
     msgLoaderSwitchPath->setWordWrap(false);
     msgLoaderSwitchPath->setMinimumWidth(100);
     msgLoaderSwitchPath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); // 扩展填充
-    msgLoaderPushButton->setText(QStringLiteral("选择文件"));
+    msgLoaderPushButton->setText(QString("选择文件"));
 
     // cmd loader
     cmdLoaderSwitchText->setWordWrap(false);
@@ -162,7 +162,7 @@ void setting::configWidgets() {
     cmdLoaderSwitchPath->setWordWrap(false);
     cmdLoaderSwitchPath->setMinimumWidth(100);
     cmdLoaderSwitchPath->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); // 扩展填充
-    cmdLoaderPushButton->setText(QStringLiteral("选择文件"));
+    cmdLoaderPushButton->setText(QString("选择文件"));
 
     // mica
     micaSwitchText->setWordWrap(false);
@@ -179,8 +179,8 @@ void setting::configWidgets() {
     // theme
     themeSwitchText->setWordWrap(false);
     themeSwitchText->setTextPixelSize(15);
-    themeComboBox->addItem(QStringLiteral("日间模式"));
-    themeComboBox->addItem(QStringLiteral("夜间模式"));
+    themeComboBox->addItem(QString("日间模式"));
+    themeComboBox->addItem(QString("夜间模式"));
 
     // message bar
     messageBarMsecSwitchText->setWordWrap(false);
@@ -198,7 +198,7 @@ void setting::loadSettings() {
     modeComboBox->setCurrentText(settings->value("run_mode").toString());
 
     eTheme->setThemeMode(settings->value("theme").toInt() == 0 ? ElaThemeType::Light : ElaThemeType::Dark);
-    themeComboBox->setCurrentText(settings->value("theme") == 0 ? QStringLiteral("日间模式") : QStringLiteral("夜间模式"));
+    themeComboBox->setCurrentText(settings->value("theme") == 0 ? QString("日间模式") : QString("夜间模式"));
 
     QString mica_code = settings->value("mica_theme").toString();
     if (mica_code == "Normal") {
@@ -312,7 +312,7 @@ void setting::onPortSpinBoxValueChanged(int value) {
 }
 
 void setting::onIpLoaderButtonClicked() {
-    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.xml)"));
+    QString file_name = QFileDialog::getOpenFileName(this, QString("打开文件"), QDir::homePath(), QString("文本文件 (*.xml)"));
     if (file_name == "") {
         return;
     }
@@ -321,7 +321,7 @@ void setting::onIpLoaderButtonClicked() {
 }
 
 void setting::onMsgLoaderButtonClicked() {
-    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.xml)"));
+    QString file_name = QFileDialog::getOpenFileName(this, QString("打开文件"), QDir::homePath(), QString("文本文件 (*.xml)"));
     if (file_name == "") {
         return;
     }
@@ -330,7 +330,7 @@ void setting::onMsgLoaderButtonClicked() {
 }
 
 void setting::onCmdLoaderButtonClicked() {
-    QString file_name = QFileDialog::getOpenFileName(this, QStringLiteral("打开文件"), QDir::homePath(), QStringLiteral("文本文件 (*.xml)"));
+    QString file_name = QFileDialog::getOpenFileName(this, QString("打开文件"), QDir::homePath(), QString("文本文件 (*.xml)"));
     if (file_name == "") {
         return;
     }
