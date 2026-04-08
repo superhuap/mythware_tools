@@ -30,6 +30,8 @@ file(GLOB_RECURSE SRC CONFIGURE_DEPENDS
 
 add_executable(${PROJECT_NAME} main.cpp ${SRC})
 
+set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE ON)
+
 target_include_directories(${PROJECT_NAME} PRIVATE lib/include)
 
 target_link_directories(${PROJECT_NAME} PRIVATE lib)
