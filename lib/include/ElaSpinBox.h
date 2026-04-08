@@ -3,7 +3,7 @@
 
 #include <QSpinBox>
 
-#include "Def.h"
+#include "ElaDef.h"
 
 class ElaSpinBoxPrivate;
 class ELA_EXPORT ElaSpinBox : public QSpinBox
