@@ -1,6 +1,15 @@
 cmake_minimum_required(VERSION 3.20)
 
-set(VCPKG_TARGET_TRIPLET "x64-windows-static")
+set(PLATFORM "x86")
+
+if(PLATFORM STREQUAL "x64")
+    set(VCPKG_TARGET_TRIPLET "x64-windows-static")
+elseif(PLATFORM STREQUAL "x86")
+    set(VCPKG_TARGET_TRIPLET "x86-windows-static")
+else()
+    message(FATAL_ERROR "⚠未识别的平台: ${PLATFORM}")
+endif()
+
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 project(mythware_tools)
@@ -34,7 +43,11 @@ set_target_properties(${PROJECT_NAME} PROPERTIES WIN32_EXECUTABLE ON)
 
 target_include_directories(${PROJECT_NAME} PRIVATE lib/include)
 
-target_link_directories(${PROJECT_NAME} PRIVATE lib)
+if(PLATFORM STREQUAL "x64")
+    target_link_directories(${PROJECT_NAME} PRIVATE lib/x64)
+elseif(PLATFORM STREQUAL "x86")
+    target_link_directories(${PROJECT_NAME} PRIVATE lib/x86)
+endif()
 
 target_link_libraries(${PROJECT_NAME}
         Qt5::Core
